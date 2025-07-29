@@ -1,0 +1,25 @@
+body{
+	background-color: #f0f4f8;
+}
+
+.nav-custom{
+	background-color: #0056b3;
+}
+
+.intro {
+  font-weight: 700;
+}
+
+.started {
+  background-color: #0056b3;
+  border: none;
+}
+
+.sign-card {
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 139, 0.4); 
+        width: 100%;
+        max-width: 400px;
+    }
