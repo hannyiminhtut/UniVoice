@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.univoice.models.Issue;
 import com.univoice.models.Student;
 
 @Repository
@@ -36,6 +37,27 @@ public class StudentImple implements StudentDAO {
         }, email, password);
         return list.isEmpty() ? null : list.get(0);
     }
+
+	@Override
+	public int getTotalStud() {
+		String sql = "SELECT count(*) FROM students";
+		return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public void sendIssue(Issue issue) {
+	    String sql = "INSERT INTO issues (title, description, img, student_id, location) VALUES (?, ?, ?, ?,?)";
+	    jdbcTemplate.update(
+	        sql,
+	        issue.getTitle(),
+	        issue.getDescription(),
+	        issue.getImg(),
+	        issue.getStudent_id(),
+	        issue.getLocation()
+	        
+	    );
+	}
+
 
 
 }

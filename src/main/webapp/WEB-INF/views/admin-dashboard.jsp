@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>UniVoice</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="../assets/css/adminstyle.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" referrerpolicy="no-referrer" />
@@ -15,7 +15,7 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         
         <div class="fw-bold fs-5 text-dark">
-           Admin Dashboard
+           <a href="/admin-dashboard" style="text-decoration:none;">Admin Dashboard</a>
         </div>
 
         <!-- Right-side icons and profile -->
@@ -44,76 +44,47 @@
 <div class="sidebar">
    
 
-    <a href="#createDepartment">➕ Create Department</a>
+    <a href="admin-dashboard/create">➕ Create Department</a>
         <hr style="border-color: #457b9d;">
-    <a href="#viewIssues">📋 View Issues</a>
+    <a href="admin-dashboard/issues">📋 View Issues</a>
         <hr style="border-color: #457b9d;">
-    <a href="#createQuestions">❓ Create Feedback Questions</a>
+    <a href="admin-dashboard/questions">❓ Create Feedback Questions</a>
         <hr style="border-color: #457b9d;">
     <a href="#createAnswers">📝 View Feedback Answers</a>
+    	 <hr style="border-color: #457b9d;">
+    <a href="admin-dashboard/logout"><i class="fa fa-sign-out" aria-hidden="true"></i>  Logout</a>
 </div>
 
 <div class="main-content">
     <div class="container-fluid">
-        
+        <div class="row">
 
-        <div class="row g-4">
-            <div class="col-md-6" id="createDepartment">
-                <div class="card p-4">
-                    <h5>Create Department</h5>
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Department Name</label>
-                            <input type="text" class="form-control" placeholder="Enter department name">
-                        </div>
-                        <button class="btn btn-primary">Create</button>
-                    </form>
+            <!-- Department Card -->
+            <div class="col-md-6 custom-box mb-4">
+                <div class="dashboard-card border-info">
+                    <i class="fa-solid fa-building-user fa-2x me-3 text-info"></i>
+                    <div>
+                        <h4 class="mb-0 fw-bold text-dark"><%= request.getAttribute("totalDept") %></h4>
+                        <small class="text-dark text-muted">Departments</small>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6" id="viewIssues">
-                <div class="card p-4">
-                    <h5>View Reported Issues</h5>
-                    <ul class="list-group mt-3">
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Network issue in CS Lab</span> <span class="badge bg-warning">Pending</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>Projector not working</span> <span class="badge bg-success">Resolved</span>
-                        </li>
-                        <!-- Dynamic list items from backend -->
-                    </ul>
+            <!-- Student Card -->
+            <div class="col-md-6 custom-box mb-4">
+                <div class="dashboard-card border-teal">
+                    <i class="fa-solid fa-chalkboard-user fa-2x me-3" style="color:#008080;"></i>
+                    <div>
+                        <h4 class="mb-0 fw-bold text-dark"><%= request.getAttribute("totalStud") %></h4>
+                        <small class="text-dark text-muted">Students</small>
+                    </div>
                 </div>
             </div>
 
-            <div class="col-md-6" id="createQuestions">
-                <div class="card p-4">
-                    <h5>Create Feedback Questions</h5>
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Question</label>
-                            <input type="text" class="form-control" placeholder="Enter question text">
-                        </div>
-                        <button class="btn btn-success">Add Question</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="col-md-6" id="createAnswers">
-                <div class="card p-4">
-                    <h5>Create Feedback Answers</h5>
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Answer Option</label>
-                            <input type="text" class="form-control" placeholder="Enter answer option">
-                        </div>
-                        <button class="btn btn-success">Add Answer</button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" ></script>
 </body>
 </html>
