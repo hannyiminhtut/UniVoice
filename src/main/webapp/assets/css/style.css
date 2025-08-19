@@ -1,25 +1,324 @@
-body{
-	background-color: #f0f4f8;
+/* Body - background color */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F8F8F8; /* fallback for the lower section */
 }
 
-.nav-custom{
-	background-color: #0056b3;
+/* Gradient only for top section */
+.top-section {
+    background: linear-gradient(to right, #0C2587, #10B6E8);
 }
 
+
+
+/* Navbar white background and spacing */
+.navbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* Navbar links */
+.navbar .nav-link {
+    color: #000000 !important;
+    font-weight: 500;
+}
+
+.navbar .nav-link:hover {
+    color: #0056b3 !important;
+}
+
+/* Login button style */
+.login-btn {
+    color: #0056b3;
+    border: 2px solid #0056b3;
+    background-color: transparent;
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.login-btn:hover {
+    background-color: #0056b3;
+    color: #ffffff !important;
+}
+
+
+
+
+
+/* Intro text */
 .intro {
-  font-weight: 700;
+	margin: 10px auto 1.5rem auto;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #ffff; /* darker navy shade */
 }
 
+.hero-section .lead {
+    color: #ffff;
+    margin: 40px auto 1.5rem auto; /* change to any color you want */
+}
+
+
+/* Get Started Button */
 .started {
-  background-color: #0056b3;
-  border: none;
+    background-color: #ffff;
+    color: #2B5288;
+    border: #2b5dbb;
+    padding: 10px 30px;
+    font-weight: bold;
+    border-radius: 30px;
+    transition: background 0.3s ease;
+    margin-top: 90px;
+    margin-bottom: 50px;
 }
 
+.started:hover {
+    background-color: #f8f9fa;
+    color: #99e6ff;
+}
+
+.text-center.mb-5 h2 {
+  color: #2B5288;
+  font-size: 2.2rem /* what we do */
+}
+
+/* Card Style */
 .sign-card {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0, 0, 139, 0.4); 
-        width: 100%;
-        max-width: 400px;
-    }
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Feature cards with rounded top border */
+.feature-card {
+    background-color: #ffffff !important;   /* White background */
+    border: none !important;                /* Remove default borders */
+    border-top: 8px solid #0d3b66 !important; /* Dark blue top border */
+    border-radius: 12px !important;         /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05) !important; /* Soft shadow */
+    padding: 20px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden; /* Ensures rounded corners show correctly */
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+}
+
+
+
+.feature-card img {
+    height: 60px;
+    width: auto;
+    margin-bottom: 15px;
+    object-fit: contain;
+}
+
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.why-use-section {
+    background: inherit; /* Keeps existing page background */
+}
+
+.why-list li {
+    font-size: 1.1rem;
+    color: #2B5288; /* Dark blue text */
+    margin-bottom: 12px;
+    line-height: 1.6;
+}
+
+.custom-heading {
+    color: #2B5288; /* Dark blue or any color code you like */
+}
+
+
+.why-use-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+
+
+.departments-section { background: #F8F8F8; } /* keeps page bg the same */
+
+.dept-card {
+    border-left: 5px solid #0d47a1;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 123, 255, 0.15); /* thin light blue border */
+    background-color: white;
+    padding: 15px;
+    text-align: left;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Keep aligned to left */
+     transition: background-color 0.3s ease, transform 0.3s ease;
+     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+}
+
+.dept-card:hover{
+  background-color: #e6f2ff; /* Light blue background on hover */
+  transform: translateY(-4px); /* Slight lift effect */
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2); /* glowing shadow */
+}
+
+.dept-icon {
+    width: 40px;
+    margin-bottom: 10px;
+    height: auto; /* Space under icon */
+}
+
+.dept-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.dept-name {
+    font-weight: bold;
+    color: #0d47a1;
+    margin-bottom: 4px;
+}
+
+.dept-desc {
+    font-size: 0.95rem;
+    color: #444;
+    margin: 0;
+    line-height: 1.4;
+}
+
+
+
+.departments-heading {
+    color: #2B5288; /* Dark blue */
+    font-size: 2.2rem; /* Larger size */
+    font-weight: 700; /* Bold */
+    margin-bottom: 3rem !important; 
+}
+
+.departments-subheading {
+    color: #2B5288; /* Slightly lighter blue */
+    font-size: 1.1rem; /* Slightly bigger than default */
+    font-weight: 400; /* Normal weight */
+    margin-bottom: 3.5rem !important;
+}
+/* Modal look & feel */
+.dept-modal-title { color: #0d3b66; font-weight: 700; }
+.dept-modal-list li { margin-bottom: 8px; line-height: 1.5; }
+.modal-body img {
+  max-width: 200px !important; /* Force override Bootstrap */
+  height: auto !important;
+}
+
+/* Change modal text color */
+.modal-content h5 {
+    color: #2B5288; /* Bootstrap primary blue */
+}
+
+.modal-body p,
+.modal-body ul {
+  font-size: 1.1rem; /* slightly larger text */
+  line-height: 1.6;  /* more readable */
+}
+
+.modal-title {
+  font-size: 1.8rem; /* bigger heading */
+}
+
+.modal-content {
+  border-radius: 12px; /* rounded corners */
+  border: 1px solid rgba(0, 123, 255, 0.2); /* light blue border */
+  box-shadow: 0 0 12px rgba(0, 123, 255, 0.4); /* glowing effect */
+  transition: all 0.3s ease;
+}
+
+.modal-content:hover {
+  box-shadow: 0 0 35px rgba(0, 123, 255, 0.6);
+}
+
+.modal-content p,
+.modal-content li {
+    color: #333333; /* Dark gray for readability */
+}
+
+/* Change modal backdrop to have a soft blue glow */
+.modal-backdrop.show {
+ 
+  border: 1px solid rgba(0, 123, 255, 0.15); /* thin light blue border */
+}
+
+/* Target the modal image inside the modal body */
+.modal-body img {
+  transition: transform 0.3s ease, filter 0.3s ease;
+  border-radius: 8px;
+}
+
+/* On hover: zoom and slightly tint the image */
+.modal-body img:hover {
+  transform: scale(1.05); /* zoom effect */
+  filter: brightness(1.1) saturate(1.2); /* brighter & more colorful */
+  cursor: pointer;
+}
+
+/* === Footer gradient & text colors === */
+.footer-section,
+.site-footer {
+  background: linear-gradient(to right, #0C2587, #10B6E8) !important;
+  color: #ffffff;
+  padding: 20px 0;
+}
+
+/* Headings & body text inside footer */
+.footer-section h4, .footer-section h5, .footer-section p, .footer-section li,
+.site-footer h4, .site-footer h5, .site-footer p, .site-footer li {
+  color: #ffffff;
+}
+
+/* Links */
+.footer-section a,
+.site-footer a {
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+}
+.footer-section a:hover,
+.site-footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Social pills */
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: #2b5bd7;
+  color: #fff;
+  margin-right: 8px;
+  font-size: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.15);
+  transition: all .3s ease;
+}
+.social-icons a:hover { background:#4a7ff3; transform: translateY(-3px); }
+
+/* Divider line */
+.footer-section hr, .site-footer hr,
+.footer-section .footer-divider, .site-footer .footer-divider {
+  border: 0;
+  border-top: 1px solid rgba(255,255,255,.3);
+  margin: 1.25rem 0;
+}
