@@ -3,6 +3,7 @@ package com.univoice.controllers;
 
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.univoice.DAOS.AdminDAO;
 import com.univoice.DAOS.DeptDAO;
+import com.univoice.DAOS.IssueDAO;
 import com.univoice.DAOS.StudentDAO;
 import com.univoice.models.Admin;
+import com.univoice.models.Department;
 import com.univoice.models.Issue;
 import com.univoice.models.Student;
 
@@ -35,6 +38,9 @@ private AdminDAO adminDAO;
 
 @Autowired
 private DeptDAO deptDAO;
+
+@Autowired
+private IssueDAO issueDAO;
 
 @PostMapping("/register")
 public String register(
@@ -60,37 +66,32 @@ public String showLoginPage() {
 @PostMapping("/check")
 public String login(@RequestParam("email") String email,
                     @RequestParam("password") String password,
-                    @RequestParam("userType") String role,
                     HttpServletRequest request) {
 
     HttpSession session = request.getSession();
 
-    switch (role) {
-        case "student":
+   
             Student student = studentDAO.findbyEmailandPassword(email, password);
+            Admin admin = adminDAO.findbyEmailandPassword(email, password);
+            Department department = deptDAO.findbyEmailandPassword(email, password);
             if (student != null) {
                 session.setAttribute("student", student);
                 return "redirect:/student-dashboard";
-            }
-            break;
-       case "admin":
-            Admin admin = adminDAO.findbyEmailandPassword(email, password);
-            if (admin != null) {
+            } 
+            else if (admin != null) {
                 session.setAttribute("admin", admin);
                 return "redirect:/admin-dashboard";
+            }else if(department != null){
+            	session.setAttribute("department", department);
+            	return "redirect:/department-dashboard";
+            }else {
+            	  return "redirect:/login?error=invalid";
             }
-            break;
-       /* case "department":
-            Department dept = departmentDAO.findByEmailAndPassword(email, password);
-            if (dept != null) {
-                session.setAttribute("department", dept);
-                return "redirect:/department/dashboard";
-            }
-            break;*/
-    }
-
-    // If login fails
-    return "redirect:/login?error=invalid";
+           
+           
+            
+       
+  
 }
 
 @GetMapping("/student-dashboard")
@@ -177,6 +178,17 @@ public String showAdminDashboard(HttpSession session,Model model) {
 	model.addAttribute("totalStud", totalStud);
 	
 	return "admin-dashboard";
+}
+
+@GetMapping("/department-dashboard")
+public String showDepartmentDashboard(HttpSession session,Model model) {
+	Department dept = (Department) session.getAttribute("department");
+	 if (dept == null) return "redirect:/login";
+	 
+	 List<Issue> issues = issueDAO.findIssuesByDeptId(dept.getId());
+	 model.addAttribute("department", dept);
+	 model.addAttribute("issues", issues);
+	return "department-dashboard";
 }
 
 

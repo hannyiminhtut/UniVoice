@@ -1,5 +1,6 @@
 package com.univoice.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.univoice.DAOS.DeptDAO;
+import com.univoice.DAOS.FeedbackDAO;
+import com.univoice.DAOS.FeedbackSessionDAO;
 import com.univoice.DAOS.IssueDAO;
 import com.univoice.models.Department;
+import com.univoice.models.FeedbackQuestions;
+import com.univoice.models.FeedbackSession;
 import com.univoice.models.Issue;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -28,6 +33,12 @@ public class AdminController {
 	@Autowired
 	private DeptDAO deptDAO;
 	
+	@Autowired
+	private FeedbackDAO questionDAO;
+	
+	@Autowired
+	private FeedbackSessionDAO sessionDAO;
+	
 	@GetMapping("admin-dashboard/create")
 	public String createDepartment() {
 		return "create-department";
@@ -35,7 +46,7 @@ public class AdminController {
 	
 	@GetMapping("admin-dashboard/questions")
 	public String createQuestions() {
-		return "create-questions";
+		return "create-feedback";
 	}
 	
 	@GetMapping("admin-dashboard/issues")
@@ -46,11 +57,19 @@ public class AdminController {
 	}
 	
 	 @GetMapping("admin-dashboard/issues/{id}")
-	    public String viewIssueDetails(@PathVariable("id") int id, Model model) {
+	    public String viewIssueDetails(@PathVariable("id") int id, Model model,HttpServletRequest request) {
 	        Issue issue = issueDAO.getIssueById(id);
+	        if (issue.getNote() != null && !issue.getNote().trim().isEmpty()) {
+	            issueDAO.updateNoteRead(id);
+	            //issue.setNoteRead(true); // update model object too
+	        }
 	        List<Department> depts = deptDAO.getAllDepartments();
+	        String deptName = issueDAO.getDeptNameByIssueId(id);
 	        model.addAttribute("issue", issue);
 	        model.addAttribute("departments", depts);
+	        model.addAttribute("deptName", deptName);
+	        
+	      
 	        return "issue-details"; // admin-issue-details.jsp
 	    }
 	 
@@ -75,7 +94,90 @@ public class AdminController {
 		 
 		 return "redirect:/admin-dashboard/issues";
 	 }
+	 
+	 @PostMapping("admin-dashboard/issues/resolve")
+	 public String changeStatus(@RequestParam("issueId") int id,
+			 					RedirectAttributes redirectAttributes) {
+		 
+		 int rows = issueDAO.updateStatus(id);
+		 if (rows > 0) {
+		        redirectAttributes.addFlashAttribute("success", "Issue is resolved ");
+		    } else {
+		        redirectAttributes.addFlashAttribute("error", "Issue not found!");
+		    }
+		 
+		 return "redirect:/admin-dashboard/issues";
+	 }
+	 
+	 @PostMapping("/admin-dashboard/create-session")
+	    public String createSession(@RequestParam String feedbackTitle,
+	                                @RequestParam String deadlineDate,
+	                                HttpSession httpSession) {
+	        int sessionId = sessionDAO.createSession(feedbackTitle, deadlineDate);
+	        httpSession.setAttribute("currentSessionId", sessionId);
+	        return "redirect:/admin-dashboard/add-question";
+	    }
+	 
+	 @GetMapping("/admin-dashboard/add-question")
+	    public String addQuestionPage(HttpSession httpSession, Model model) {
+	        Integer sessionId = (Integer) httpSession.getAttribute("currentSessionId");
+	        if (sessionId == null) return "redirect:/admin-dashboard/create-feedback";
+
+	        FeedbackSession s = sessionDAO.findById(sessionId);
+	        List<FeedbackQuestions> qs = questionDAO.findQuestionsBySession(sessionId);
+
+	        model.addAttribute("session", s);
+	        model.addAttribute("questions", qs);
+	        return "add-questions"; // JSP with your MCQ/Rating form + list
+	    }
+	 
+	 @PostMapping("/admin-dashboard/save-question")
+	    public String saveQuestion(@RequestParam String questionText,
+	                               @RequestParam String questionType,
+	                               @RequestParam(value = "options", required = false) String[] options,
+	                               HttpSession httpSession,
+	                               HttpServletRequest request) {
+	        Integer sessionId = (Integer) httpSession.getAttribute("currentSessionId");
+	        if (sessionId == null) return "redirect:/admin-dashboard/create-feedback";
+
+	        FeedbackQuestions q = new FeedbackQuestions();
+	        q.setSessionId(sessionId);
+	        q.setQuestionText(questionText);
+	        q.setQuestionType(questionType);
+	        if ("multiple".equals(questionType) && options != null) {
+	            q.setOptions(Arrays.asList(options));
+	        }
+	        questionDAO.addQuestion(q);
+
+	        request.setAttribute("success", "Question added.");
+	        return "redirect:/admin-dashboard/add-question";
+	    }
+	 
+	 @GetMapping("/admin-dashboard/review-session")
+	    public String reviewSession(HttpSession httpSession, Model model) {
+	        Integer sessionId = (Integer) httpSession.getAttribute("currentSessionId");
+	        if (sessionId == null) return "redirect:/admin-dashboard/create-feedback";
+
+	        FeedbackSession s = sessionDAO.findById(sessionId);
+	        List<FeedbackQuestions> qs = questionDAO.findQuestionsBySession(sessionId);
+
+	        model.addAttribute("session", s);
+	        model.addAttribute("questions", qs);
+	        return "review-session"; // JSP
+	    }
 	
+	  @PostMapping("/admin-dashboard/publish-session")
+	    public String publishSession(HttpSession httpSession) {
+	        Integer sessionId = (Integer) httpSession.getAttribute("currentSessionId");
+	        if (sessionId != null) sessionDAO.publish(sessionId);
+	        return "redirect:/admin-dashboard"; // your dashboard landing
+	    }
+	  
+	  @PostMapping("/admin-dashboard/delete-question")
+	    public String deleteQuestion(@RequestParam int questionId) {
+	        questionDAO.deleteQuestion(questionId);
+	        return "redirect:/admin-dashboard/add-question";
+	    }
 	
 
 }

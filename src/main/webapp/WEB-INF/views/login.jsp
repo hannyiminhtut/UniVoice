@@ -51,7 +51,8 @@
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" name="password" id="password" required>
         </div>
-
+		
+		<!-- select user 
         <div class="mb-5">
             <label for="userType" class="form-label">Choose User :</label>
             <select class="form-select" name="userType" id="userType" required>
@@ -60,7 +61,7 @@
                 <option value="admin">Admin</option>
                 <option value="department">Department</option>
             </select>
-        </div>
+        </div> -->
 
         <div class="d-grid">
             <button type="submit" class="btn btn-primary w-100">Login</button>

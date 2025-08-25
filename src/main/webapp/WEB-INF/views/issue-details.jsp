@@ -3,6 +3,7 @@
 <%@ page import="com.univoice.models.Issue" %>
 <%@ page import="com.univoice.models.Department" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.univoice.DAOS.DeptDAO" %>
 <%
 	Issue issue = (Issue)request.getAttribute("issue");
 	String title = issue.getTitle();
@@ -114,14 +115,31 @@ body {
 
         <% if (imagePath != null && !imagePath.isEmpty()) { %>
             <p><i class="fa-solid fa-image me-2"></i> <strong>Attached Image:</strong></p>
-            <img src="<%=imagePath  %>" class="issue-img" alt="Issue Image">
+            <img src="<%=imagePath  %>" class="issue-img" alt="Issue Image" width="200px" height="250px">
         <% } %>
+        
+        <% 
+        String note = issue.getNote();
+        if (note != null && !note.trim().isEmpty()) { 
+    	%>
+        <div class="mt-4 p-3 border rounded bg-light">
+            <h6><i class="fa-solid fa-check-circle text-success me-2"></i> Resolution Note</h6>
+            <p class="mb-0"><%= note %></p>
+        </div>
+    <% } %>
     </div>
    <div class="issue-footer d-flex justify-content-between align-items-center">
     <a href="../issues" class="btn btn-secondary">
         <i class="fa-solid fa-arrow-left"></i> Back to Issues
     </a>
 
+<%
+    String status = issue.getStatus();
+	
+%>
+<% if(issue.getNote() == null)  {%> 
+<% if ("pending".equalsIgnoreCase(status)) { %>
+    <!-- Show assign form if pending -->
     <form action="<%= request.getContextPath() %>/admin/issues/assign" method="POST" class="d-inline">
         <input type="hidden" name="issueId" value="<%= issue.getIssue_id() %>">
         
@@ -144,6 +162,27 @@ body {
             </button>
         </div>
     </form>
+<% } else if ("assigned".equalsIgnoreCase(status)) { %>
+    <!-- Show message if already assigned -->
+    <button class="badge bg-warning text-dark">
+        Already assigned to <%=  request.getAttribute("deptName") %>
+    </button>
+<% } %>
+
+<% } else if  ("resolved".equalsIgnoreCase(status)) { %>
+	 <span class="badge bg-success">
+                        <i class="fa-solid fa-circle-check me-1"></i> Issue is resolved by <%= request.getAttribute("deptName") %>
+     </span>
+<% } else { %>
+<form action="resolve" method="POST" class="d-inline">
+            <input type="hidden" name="issueId" value="<%= issue.getIssue_id() %>">
+            <button type="submit" class="btn btn-success">
+                <i class="fa-solid fa-check"></i> Mark as Resolved
+            </button>
+        </form>
+<% }%>
+
+    
 </div>
    
 </div>

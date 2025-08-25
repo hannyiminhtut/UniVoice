@@ -23,7 +23,6 @@
         border-radius: 10px;
         position: fixed;
         margin-left:10px;
-       
     }
     .sidebar a {
         color: white;
@@ -39,7 +38,7 @@
     .sidebar .menu-icon {
         margin-right: 10px;
     }
-    
+
     .main-content{
     	margin-left:240px;
     	max-width:175vh;
@@ -50,12 +49,12 @@
         border-radius: 15px;
         background: white;
         padding: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .custom-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.12);
     }
 
     /* Profile */
@@ -67,34 +66,156 @@
         border: 2px solid #6c63ff;
     }
 
-    /* Finance Cards */
-    .finance-icon {
-        font-size: 30px;
-        color: #6c63ff;
-        margin-bottom: 10px;
-    }
-
-    /* Smooth fade-in */
     .fade-in {
         opacity: 0;
         transform: translateY(20px);
         animation: fadeInUp 0.6s ease forwards;
     }
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
- 
+    @keyframes fadeInUp { to { opacity:1; transform: translateY(0); } }
+
+    /* ===== [NEW] Issue Status Cards ===== */
+    
+    
+    .status-card {
+        border-radius: 16px;
+        background: #fff;
+        padding: 24px 18px 16px 18px; 
+        font-size: 0.85rem;  
+        height: 220px;            /* same height for all 3 cards */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid rgba(0,0,0,0.06);
+        margin-top: 12px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.06); /* subtle shadow, no color glow */
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background-color .2s ease;
     }
     
- 
+    .status-card:hover {
+  background: rgba(108, 99, 255, 0.08);  /* light purple tint (theme color) */
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+}
+
+/* Optional: tiny pulse on the icon badge when hovering the card */
+.status-card:hover .icon-badge {
+  transform: scale(1.03);
+  transition: transform .2s ease;
+}
+    .status-headline {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .icon-badge {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+}
+    
+    .icon-pending  { background: linear-gradient(135deg, #ff8a39, #ff5f6d); }
+    .icon-assigned { background: linear-gradient(135deg, #6a85ff, #6c63ff); }
+    .icon-resolved { background: linear-gradient(135deg, #2ecc71, #1abc9c); }
+
+    .status-title {
+        margin: 0;
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: #222;
+    }
+    .status-text {
+        color: #5c5f66;
+        margin: 8px 0 0 0;
+    }
+
+    /* Learn more button */
+.status-card .learn-btn {
+    align-self: flex-start;
+    border-radius: 999px;
+    padding: 8px 12px;        /* smaller button */
+    font-size: 0.75rem;       /* smaller text */
+    font-weight: 600;
+    border: 0;
+    background: #6c63ff;
+    color: #fff;
+    margin-top: 10px;         /* breathing room above */
+    line-height: 1.2;
+}
+.status-card .learn-btn i { margin-right: 6px; }
+
+    /* Small helper for the purple section titles */
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 12px;
+        transition: transform .15s ease, box-shadow .15s ease, background .2s ease, opacity .2s ease;
+    }
+    .status-card .learn-btn:hover,
+.status-card .learn-btn:focus {
+  background: linear-gradient(90deg, #544CFF, #7A6BFF);
+  box-shadow: 0 6px 14px rgba(108,99,255,.35);
+  transform: translateY(-1px);
+  outline: none;
+}
+    /* ===== Pretty modal like screenshot ===== */
+.uv-modal .modal-content{
+  border-radius: 16px;
+  border: 0;
+  padding: 20px 20px 8px 20px;   /* roomy inside */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.uv-modal .modal-header{
+  border-bottom: 0;
+  padding: 6px 6px 0 6px;
+}
+.uv-modal .modal-title{
+  font-weight: 500;              /* bold black title */
+  color: #111;
+  font-size: 1.5rem;
+}
+.uv-modal .modal-body{
+  color: #444;
+  line-height: 1.6;
+  padding: 8px 6px 0 6px;
+}
+.uv-modal .btn-close{
+  background: #f0f2f5;
+  border-radius: 999px;
+  opacity: 1;
+  width: 28px; height: 28px;
+}
+.btn-gotit{
+  width: 100%;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  border: 0;
+  background: linear-gradient(90deg, #6c63ff, #8e2de2); /* theme purple */
+  color: #fff;
+}
+.btn-gotit:hover {
+  background: linear-gradient(90deg, #544CFF, #7A6BFF); /* deeper purple */
+  box-shadow: 0 6px 14px rgba(108,99,255,.35);
+  transform: translateY(-2px);
+  color: #fff; /* keep white text */
+}
+.text-center h3 {
+  color: #222;
+}
+.text-center p {
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
+    
 </style>
 </head>
 <body>
 	<div class="container-fluid">
     <div class="row">
-        
+
         <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <div class="text-center mb-4">
@@ -113,7 +234,7 @@
         <div class="col-md-10 p-4 main-content">
         	<div class="container-fluid">
 
-            <!-- Top Bar -->
+            <!-- Top Bar (unchanged) -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <input type="text" class="form-control w-50" placeholder="Search...">
                 <div class="d-flex align-items-center gap-3">
@@ -121,44 +242,84 @@
                     <img src="https://i.pravatar.cc/50" alt="Profile" class="profile-img">
                 </div>
             </div>
-			<%
-			    Student student = (Student) session.getAttribute("student");
-			    String studentName = (student != null) ? student.getName() : "Guest";
-			%>
-            <!-- Welcome Card -->
+
+            <%
+                com.univoice.models.Student student = (com.univoice.models.Student) session.getAttribute("student");
+                String studentName = (student != null) ? student.getName() : "Guest";
+            %>
+
+            <!-- Welcome Card (unchanged) -->
             <div class="custom-card mb-4 fade-in" style="background: linear-gradient(90deg, #6c63ff, #8e2de2); color: white;">
                 <h5><%= java.time.LocalDate.now() %></h5>
                 <h4>Welcome back, <%=studentName %></h4>
                 <p>Always stay updated in your student dashboard</p>
             </div>
 
-            <!-- Finance Section -->
-            <h4>Finance</h4>
-            <div class="row g-3 mb-4">
+            <!-- ===== Issue Status Cards (replaces Finance) ===== -->
+<div class="text-center mb-4">
+    <h3 class="fw-bold">Issue Status Overview</h3>
+    <p class="text-muted">Track the progress of your submitted issues and feedback</p>
+</div>
+<div class="row g-3 mb-4 justify-content-center">
+            
+
+                <!-- Pending -->
                 <div class="col-md-4 fade-in">
-                    <div class="custom-card text-center">
-                        <i class="fa-solid fa-sack-dollar finance-icon"></i>
-                        <h5>$10,000</h5>
-                        <p class="text-muted">Total Payable</p>
+                    <div class="status-card h-100">
+                        <div>
+                            <div class="status-headline">
+                                <div class="icon-badge icon-pending">
+                                    <i class="fa-solid fa-clock fa-sm"></i>
+                                </div>
+                                <h5 class="status-title">Pending</h5>
+                            </div>
+                            <p class="status-text mt-3">Your issue has been received and is awaiting review.</p>
+                        </div>
+                        <button class="learn-btn" data-bs-toggle="modal" data-bs-target="#modalPending">
+                            <i class="fa-solid fa-circle-info"></i> Learn more
+                        </button>
                     </div>
                 </div>
+
+                <!-- Assigned -->
                 <div class="col-md-4 fade-in" style="animation-delay:0.1s">
-                    <div class="custom-card text-center">
-                        <i class="fa-solid fa-hand-holding-dollar finance-icon"></i>
-                        <h5>$5,000</h5>
-                        <p class="text-muted">Total Paid</p>
+                    <div class="status-card h-100">
+                        <div>
+                            <div class="status-headline">
+                                <div class="icon-badge icon-assigned">
+                                    <i class="fa-solid fa-user-check fa-sm"></i>
+                                </div>
+                                <h5 class="status-title">Assigned</h5>
+                            </div>
+                            <p class="status-text mt-3">Your issue has been assigned to a department.</p>
+                        </div>
+                        <button class="learn-btn" data-bs-toggle="modal" data-bs-target="#modalAssigned">
+                            <i class="fa-solid fa-circle-info"></i> Learn more
+                        </button>
                     </div>
                 </div>
+
+                <!-- Resolved -->
                 <div class="col-md-4 fade-in" style="animation-delay:0.2s">
-                    <div class="custom-card text-center">
-                        <i class="fa-solid fa-chart-column finance-icon"></i>
-                        <h5>$300</h5>
-                        <p class="text-muted">Others</p>
+                    <div class="status-card h-100">
+                        <div>
+                            <div class="status-headline">
+                                <div class="icon-badge icon-resolved">
+                                    <i class="fa-solid fa-circle-check fa-sm"></i>
+                                </div>
+                                <h5 class="status-title">Resolved</h5>
+                            </div>
+                            <p class="status-text mt-3">Your issue has been successfully resolved.</p>
+                        </div>
+                        <button class="learn-btn" data-bs-toggle="modal" data-bs-target="#modalResolved">
+                            <i class="fa-solid fa-circle-info"></i> Learn more
+                        </button>
                     </div>
                 </div>
             </div>
+            <!-- ===== End Issue Status ===== -->
 
-            <!-- Courses Section -->
+            <!-- Courses Section (unchanged) -->
             <h4>Enrolled Courses</h4>
             <div class="row g-3 mb-4">
                 <div class="col-md-6 fade-in">
@@ -175,7 +336,7 @@
                 </div>
             </div>
 
-            <!-- Notice Section -->
+            <!-- Notice Section (unchanged) -->
             <div class="row g-3">
                 <div class="col-md-6 fade-in">
                     <div class="custom-card">
@@ -196,6 +357,65 @@
         </div>
     </div>
 </div>
+
+<!-- ===== Modals for Learn More ===== -->
+
+<!-- Modal: Pending -->
+<div class="modal fade uv-modal" id="modalPending" tabindex="-1" aria-labelledby="modalPendingLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header align-items-start">
+        <h5 class="modal-title" id="modalPendingLabel">Pending</h5>
+        <!-- no X button -->
+      </div>
+      <div class="modal-body">
+        When your issue is marked as <strong>Pending</strong>, it means we’ve successfully received your report and it’s waiting for the admin team to review before assigning it to the right department.
+      </div>
+      <div class="p-3 pt-4">
+        <button type="button" class="btn-gotit" data-bs-dismiss="modal">Got it!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Assigned -->
+<div class="modal fade uv-modal" id="modalAssigned" tabindex="-1" aria-labelledby="modalAssignedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header align-items-start">
+        <h5 class="modal-title" id="modalAssignedLabel">Assigned</h5>
+        <!-- no X button -->
+      </div>
+      <div class="modal-body">
+        <strong>Assigned</strong> means the admin has reviewed your report and forwarded it to the relevant department. They’re now working on a fix.
+      </div>
+      <div class="p-3 pt-4">
+        <button type="button" class="btn-gotit" data-bs-dismiss="modal">Got it!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Resolved -->
+<div class="modal fade uv-modal" id="modalResolved" tabindex="-1" aria-labelledby="modalResolvedLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header align-items-start">
+        <h5 class="modal-title" id="modalResolvedLabel">Resolved</h5>
+        <!-- no X button -->
+      </div>
+      <div class="modal-body">
+        <strong>Resolved</strong> means the department has fixed the issue and the admin has verified the solution. You can view the resolution details on the issue result page.
+      </div>
+      <div class="p-3 pt-4">
+        <button type="button" class="btn-gotit" data-bs-dismiss="modal">Got it!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== End Modals ===== -->
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

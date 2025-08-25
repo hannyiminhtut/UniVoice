@@ -14,6 +14,8 @@ public class Issue {
 	private String status;
 	private String note;
 	private String created_at;
+	private Boolean note_read;
+	private Boolean read_dept;
 	
 	
 	public Issue() {
@@ -133,6 +135,25 @@ public class Issue {
 	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
 	}
+
+	public Boolean getNote_read() {
+		return note_read;
+	}
+
+	public void setNote_read(Boolean note_read) {
+		this.note_read = note_read;
+	}
+
+	public Boolean getRead_dept() {
+		return read_dept;
+	}
+
+	public void setRead_dept(Boolean read_dept) {
+		this.read_dept = read_dept;
+	}
+	
+	
+	
 	
 	
 

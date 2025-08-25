@@ -1,0 +1,108 @@
+   body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .issue-card {
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            border: 1px solid #dee2e6;
+        }
+
+        .issue-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .badge-status {
+            font-size: 0.85rem;
+            padding: 0.4em 0.75em;
+            border-radius: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-pending { background-color: #ffc107; color: #212529; }
+        .badge-assigned { background-color: #0d6efd; color: #fff; }
+        .badge-solved { background-color: #198754; color: #fff; }
+
+        /* Modal header */
+        .modal-header {
+            background-color: #0d6efd;
+            color: #fff;
+            border-bottom: none;
+        }
+
+        .btn-solve {
+            background-color: #198754;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-solve:hover {
+            background-color: #157347;
+        }
+        
+        .issue-card {
+        background: #fff;
+        border: none;
+        border-radius: 18px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    
+     .issue-card::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(76,110,245,0.15) 0%, transparent 70%);
+        transform: scale(0);
+        transition: transform 0.5s ease;
+    }
+
+    .issue-card:hover::before {
+        transform: scale(1);
+    }
+    
+     .issue-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .issue-date {
+        font-size: 0.9rem;
+        color: #777;
+    }
+    
+     .navbar {
+		    height: 65px;
+		    border-bottom: 1px solid #eee;
+		    font-family: 'Segoe UI', sans-serif;
+		}
+
+		.navbar a img {
+		    transition: transform 0.2s ease;
+		}
+
+		.navbar a:hover img {
+		    transform: scale(1.1);
+		}

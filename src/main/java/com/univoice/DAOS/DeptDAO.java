@@ -13,5 +13,11 @@ public interface DeptDAO {
 	List<Department> getAllDepartments();
 	
 	void issueAssignToDept(int issueId,int deptId);
+	
+	String getNameById(int id);
+	
+	Department findbyEmailandPassword(String email,String password);
+	
+	int updateProfileImage(int deptId,String imagePath);
 
 }

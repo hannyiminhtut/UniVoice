@@ -71,3 +71,14 @@ body {
             transform: translateY(0);
         }
     }
+    
+    .unread-dot {
+    top: 10px;         /* distance from top */
+    right: 8px;       /* distance from right */
+    width: 15px;      /* smaller dot */
+    height: 15px;
+    background-color: red;
+    border-radius: 50%;
+    border: 2px solid white;  /* contrast with background */
+}
+    

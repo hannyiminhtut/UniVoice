@@ -17,11 +17,14 @@ public class WebConfig implements WebMvcConfigurer {
         return resolver;
     }
 	
+	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Map "/uploads/**" URL to local disk "C:/uploads/"
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:C:/uploads/");
-    }
+	    registry.addResourceHandler("/uploads/**")
+	            .addResourceLocations("file:C:/uploads/")
+	            .setCachePeriod(3600)
+	            .resourceChain(true);
+	}
+
 	
 	
 }

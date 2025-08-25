@@ -87,6 +87,21 @@
 
 <div class="container my-3">
     <div class="row justify-content-center">
+    
+    	<div class="col-lg-8" >
+		<% if (request.getAttribute("success") != null) { %>
+  			<div class="alert alert-success" role="alert">
+   				 <%= request.getAttribute("success") %>
+  			</div>
+		<% } %>
+
+		<% if (request.getAttribute("fail") != null) { %>
+		  <div class="alert alert-danger" role="alert">
+		    <%= request.getAttribute("fail") %>
+		  </div>
+		<% } %>
+		
+		</div>
         <div class="col-lg-8">
             <div class="card p-4">
                 <h5 class="text-center fw-bold text-primary mb-4" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Create Feedback Questions</h5>
@@ -186,6 +201,11 @@
         });
     });
     
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => alert.remove());
+    }, 5000);
+    	
   
 </script>
 
