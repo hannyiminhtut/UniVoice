@@ -13,6 +13,20 @@ public interface FeedbackSessionDAO {
 	 void publish(int id);
 	 
 	 List<FeedbackSession> findAll();
+	 
+	 boolean hasPendingFeedback(int studentId);
+	 
+	 List<FeedbackSession> getPendingSessionsForStudent(int studentId);
+	 
+	 int saveFeedbackResponse(int sessionId, int studentId);
+	 
+	 int getTotal();
+	 
+	 int deleteSession(int id);
+	 
+	 
+	 
+	 
 	
 
 }

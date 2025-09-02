@@ -33,11 +33,14 @@ public class DeptImple implements DeptDAO {
 	@Override
 	public List<Department> getAllDepartments() {
 		
-		String sql = "SELECT id, name FROM departments";
+		String sql = "SELECT * FROM departments";
 	    return jdbcTemplate.query(sql, (rs, rowNum) -> {
 	        Department dept = new Department();
 	        dept.setId(rs.getInt("id"));
 	        dept.setName(rs.getString("name"));
+	        dept.setPassword(rs.getString("password"));
+	        dept.setImage(rs.getString("image"));
+	        dept.setEmail(rs.getString("email"));
 	        return dept;
 	    });
 	}
@@ -78,6 +81,45 @@ public class DeptImple implements DeptDAO {
 	public int updateProfileImage(int deptId, String imagePath) {
 		String sql = "UPDATE departments SET image = ? WHERE id = ?";
 		return jdbcTemplate.update(sql,imagePath,deptId);
+	}
+
+	@Override
+	public Department findbyId(int iD) {
+		String sql = "SELECT * FROM departments WHERE id = ?";
+		List<Department> list = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Department d = new Department();
+            d.setId(rs.getInt("id"));
+            d.setName(rs.getString("name"));
+            d.setEmail(rs.getString("email"));
+            d.setPassword(rs.getString("password"));
+            d.setImage(rs.getString("image"));
+            return d;
+        }, iD);
+        return list.isEmpty() ? null : list.get(0);
+	}
+
+	@Override
+	public int update(Department dept) {
+		
+		String name  = dept.getName()  == null ? "" : dept.getName().trim();
+	    String email = dept.getEmail() == null ? "" : dept.getEmail().trim();
+	    String pwd   = dept.getPassword(); // assume already hashed if you hash upstream
+
+	    // Update password only when supplied; image intentionally left unchanged.
+	    if (pwd != null && !pwd.isBlank()) {
+	        String sql = "UPDATE departments SET name = ?, email = ?, password = ? WHERE id = ?";
+	        return jdbcTemplate.update(sql, name, email, pwd, dept.getId());
+	    } else {
+	        String sql = "UPDATE departments SET name = ?, email = ? WHERE id = ?";
+	        return jdbcTemplate.update(sql, name, email, dept.getId());
+	    }
+	}
+
+	@Override
+	public int deleteDept(int id) {
+		final String sql = "DELETE FROM departments WHERE id = ?";
+	    return jdbcTemplate.update(sql, id);
+		
 	}
 	 
 }

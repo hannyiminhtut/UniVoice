@@ -17,7 +17,7 @@
       <h4 class="mb-0">Review Feedback</h4>
       <div class="text-muted">
         Title: <strong><%= sessionObj.getTitle()%></strong> |
-        Deadline: <strong><%= sessionObj.getDeadlineDate()%></strong>
+        Deadline: <strong><%= sessionObj.getDeadline_date() %></strong>
       </div>
     </div>
     <div>

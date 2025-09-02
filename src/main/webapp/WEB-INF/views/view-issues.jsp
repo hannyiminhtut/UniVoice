@@ -32,7 +32,7 @@
 
         <!-- Left: Title -->
         <div class="fw-bold fs-5 text-dark">
-            <a href="/admin-dashboard" style="text-decoration:none;">Admin Dashboard</a>
+            <a href="../admin-dashboard" style="text-decoration:none;">Admin Dashboard</a>
         </div>
 
         <!-- Right-side icons and profile -->

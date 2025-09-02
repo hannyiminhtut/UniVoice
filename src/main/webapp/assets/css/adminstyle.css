@@ -91,6 +91,67 @@
         border-color: #008080 !important;
     }
     
+    .dashboard-card {
+    background: #fff; border-radius: 14px; padding: 18px 20px;
+    display:flex; align-items:center; box-shadow:0 8px 16px rgba(0,0,0,.06);
+  }
+  
+  .custom-box .dashboard-card { border-left: 6px solid #2563eb; }
+  
+  .sessions-card { border:0; border-radius: 14px; box-shadow: 0 10px 26px rgba(0,0,0,.08); }
+  
+  .sessions-card .card-header { background:#fff; border-bottom:1px solid #eef2f7; }
+  
+  .table > :not(caption) > * > * { vertical-align: middle; }
+  
+  /* Circle Sessions card */
+  .circle-card{
+    width: 180px; height: 180px; border-radius: 999px;
+    background:#fff; border:3px solid #0ea5e9;
+    box-shadow: 0 10px 26px rgba(0,0,0,.08);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    position:relative; text-decoration:none; color:inherit;
+    transition: transform .15s ease, box-shadow .15s ease;
+    cursor:pointer;
+  }
+  .circle-card:hover{ transform: translateY(-2px); box-shadow:0 14px 32px rgba(0,0,0,.12); }
+  .circle-card:focus-visible{ outline: 3px solid #38bdf8; outline-offset: 3px; }
+
+  .circle-icon{
+    position:absolute; top:10px; right:10px;
+    width:38px; height:38px; border-radius:999px;
+    background:#e0f2fe; color:#0ea5e9;
+    display:grid; place-items:center;
+  }
+  .circle-value{ font-weight:800; font-size:42px; line-height:1; color:#0f172a; }
+  .circle-label{ margin-top:6px; font-size:14px; color:#6b7280; }
+
+  @media (max-width:576px){
+    .circle-card{ width:150px; height:150px; }
+    .circle-value{ font-size:34px; }
+  }
+  
+  /* Red variant for Pending Issues */
+.circle-card-danger { border-color: #ef4444 !important; }
+.circle-card-danger:hover { box-shadow: 0 14px 32px rgba(239,68,68,.25); }
+.circle-card-danger .circle-icon { background: #fee2e2; color: #ef4444; }
+/* (optional) darken the number slightly */
+.circle-card-danger .circle-value { color: #991b1b; }
+
+
+  /* Info (Departments) */
+  .circle-card-info { border-color: #00b4d8 !important; }
+  .circle-card-info .circle-icon { background:#e0f7ff; color:#00b4d8; }
+  .circle-card-info .circle-value { color:#0f172a; }
+
+  /* Teal (Students) */
+  .circle-card-teal { border-color: #008080 !important; }
+  .circle-card-teal .circle-icon { background:#e6fffa; color:#008080; }
+  .circle-card-teal .circle-value { color:#064e3b; }
+
+
+  
+    
    
     
 

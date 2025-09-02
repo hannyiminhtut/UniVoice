@@ -19,5 +19,11 @@ public interface DeptDAO {
 	Department findbyEmailandPassword(String email,String password);
 	
 	int updateProfileImage(int deptId,String imagePath);
+	
+	Department findbyId(int iD);
+	
+	int update(Department dept);
+	
+	int deleteDept(int id);
 
 }

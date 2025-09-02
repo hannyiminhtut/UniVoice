@@ -26,8 +26,8 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="#">Home</a></li>
-                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="#">About</a></li>
-                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="#">Contact</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/about">About</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/contact">Contact</a></li>
                     <li class="nav-item ms-3">
                         <a href="/login" class="btn login-btn">Login</a>
                     </li>

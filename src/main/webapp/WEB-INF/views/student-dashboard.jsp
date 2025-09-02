@@ -213,6 +213,10 @@
 </style>
 </head>
 <body>
+	<%
+          com.univoice.models.Student student = (com.univoice.models.Student) session.getAttribute("student");
+          String studentName = (student != null) ? student.getName() : "Guest";
+      %>
 	<div class="container-fluid">
     <div class="row">
 
@@ -221,35 +225,50 @@
             <div class="text-center mb-4">
                 <i class="fa-solid fa-graduation-cap fa-2x"></i>
             </div>
-            <a href="#"><i class="fa-solid fa-gauge-high menu-icon"></i> Dashboard</a>
-            <a href="#"><i class="fa-solid fa-user menu-icon"></i> Profile</a>
+            <a href="student-dashboard/createProfile/<%= student.getUser_id() %>"><i class="fa-solid fa-user menu-icon"></i> Profile</a>
             <a href="student-dashboard/submitIssues"><i class="fa-solid fa-pen menu-icon"></i> Submit Issues </a>
-            <a href="#"><i class="fa-solid fa-chart-line menu-icon"></i> Issues Result</a>
-            <a href="#"><i class="fa-solid fa-book menu-icon"></i> Feedback</a>
-            <a href="#"><i class="fa-solid fa-bullhorn menu-icon"></i> Contact Admin</a>
+            <a href="student-dashboard/issueResult"><i class="fa-solid fa-chart-line menu-icon"></i> Issues Result</a>
+            
+          	<a href="student-dashboard/feedback" class="position-relative">
+			    <i class="fa-solid fa-book menu-icon"></i> Feedback
+			    <% if ((Boolean) request.getAttribute("hasPendingFeedback")) { %>
+			        <span class="position-absolute top-2 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+			    <% } %>
+			</a>
+          	
+            <!--  <a href="https://mail.google.com/mail/u/0/#inbox"><i class="fa-solid fa-bullhorn menu-icon"></i> Contact Admin</a>-->
             <a href="student-dashboard/logout"><i class="fa-solid fa-right-from-bracket menu-icon"></i> Logout</a>
         </div>
 
         <!-- Main Content -->
         <div class="col-md-10 p-4 main-content">
+        		
         	<div class="container-fluid">
 
-            <!-- Top Bar (unchanged) -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <input type="text" class="form-control w-50" placeholder="Search...">
-                <div class="d-flex align-items-center gap-3">
-                    <span>John Doe<br><small class="text-muted">3rd year</small></span>
-                    <img src="https://i.pravatar.cc/50" alt="Profile" class="profile-img">
-                </div>
-            </div>
-
-            <%
-                com.univoice.models.Student student = (com.univoice.models.Student) session.getAttribute("student");
-                String studentName = (student != null) ? student.getName() : "Guest";
-            %>
-
+         
+            
+			<%
+			   String msg = (String) request.getAttribute("msg");
+			   if (msg != null) {
+			%>
+			   <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+			       <%= msg %>
+			       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			   </div>
+		  <% } %>
+			
             <!-- Welcome Card (unchanged) -->
             <div class="custom-card mb-4 fade-in" style="background: linear-gradient(90deg, #6c63ff, #8e2de2); color: white;">
+            	<!-- Profile image (dynamic: student or default) -->
+    <%
+        String profileImg = (student != null && student.getImage() != null && !student.getImage().isEmpty()) 
+                            ? student.getImage()
+                            : "../assets/imgs/blank-profile.webp";
+    %>
+    <img src="<%= profileImg %>" 
+         alt="Profile" 
+         class="profile-img position-absolute" 
+         style="top: 16px; right: 16px; border:2px solid #fff; width:45px; height:45px;" />
                 <h5><%= java.time.LocalDate.now() %></h5>
                 <h4>Welcome back, <%=studentName %></h4>
                 <p>Always stay updated in your student dashboard</p>
@@ -319,40 +338,6 @@
             </div>
             <!-- ===== End Issue Status ===== -->
 
-            <!-- Courses Section (unchanged) -->
-            <h4>Enrolled Courses</h4>
-            <div class="row g-3 mb-4">
-                <div class="col-md-6 fade-in">
-                    <div class="custom-card d-flex justify-content-between align-items-center">
-                        <span>Object Oriented Programming</span>
-                        <button class="btn btn-outline-primary">View</button>
-                    </div>
-                </div>
-                <div class="col-md-6 fade-in" style="animation-delay:0.1s">
-                    <div class="custom-card d-flex justify-content-between align-items-center">
-                        <span>Fundamentals of Database Systems</span>
-                        <button class="btn btn-outline-primary">View</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Notice Section (unchanged) -->
-            <div class="row g-3">
-                <div class="col-md-6 fade-in">
-                    <div class="custom-card">
-                        <h6>Prelim Payment Due</h6>
-                        <p class="text-muted">Sorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="#">See more</a>
-                    </div>
-                </div>
-                <div class="col-md-6 fade-in" style="animation-delay:0.1s">
-                    <div class="custom-card">
-                        <h6>Exam Schedule</h6>
-                        <p class="text-muted">Nunc vulputate libero et velit interdum, ac aliquet odio mattis.</p>
-                        <a href="#">See more</a>
-                    </div>
-                </div>
-            </div>
 
         </div>
     </div>
@@ -425,6 +410,11 @@
     document.querySelectorAll('.fade-in').forEach((el, index) => {
         el.style.animationDelay = `${index * 0.1}s`;
     });
+    
+    setTimeout(() => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => alert.remove());
+    }, 5000);
 </script>
 </body>
 </html>

@@ -19,7 +19,7 @@
 <body class="bg-light">
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Add Questions — <span class="text-primary"><%= sessionObj.getTitle()%></span> (Deadline: <%= sessionObj.getDeadlineDate()%>)</h4>
+    <h4 class="mb-0">Add Questions — <span class="text-primary"><%= sessionObj.getTitle()%></span> (Deadline: <%= sessionObj.getDeadline_date()%>)</h4>
     <div>
       <a href="/admin-dashboard/review-session" class="btn btn-outline-primary">Review</a>
     </div>

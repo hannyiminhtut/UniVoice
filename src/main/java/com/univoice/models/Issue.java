@@ -16,8 +16,18 @@ public class Issue {
 	private String created_at;
 	private Boolean note_read;
 	private Boolean read_dept;
+	private String resolved_at;
 	
 	
+	
+	public String getResolved_at() {
+		return resolved_at;
+	}
+
+	public void setResolved_at(String resolved_at) {
+		this.resolved_at = resolved_at;
+	}
+
 	public Issue() {
 		
 	}

@@ -7,9 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.univoice.models.FeedbackOptions;
 import com.univoice.models.FeedbackQuestions;
 
 @Repository
@@ -71,6 +74,24 @@ public class FeedbackImple implements FeedbackDAO {
 	@Override
 	public void deleteQuestion(int questionId) {
         jdbc.update("DELETE FROM feedback_questions WHERE id=?", questionId);
+		
+	}
+
+	@Override
+	public List<FeedbackOptions> findOptionsByQuestionId(int questionId) {
+        String sql = "SELECT id, question_id, option_text FROM feedback_options WHERE question_id = ?";
+        
+        return jdbc.query(
+            sql,
+            new Object[]{questionId},
+            new BeanPropertyRowMapper<>(FeedbackOptions.class)
+        );
+    }
+
+	@Override
+	public void saveAnswer(int responseId, int questionId, String answerValue) {
+		String sql = "INSERT INTO feedback_answers (response_id, question_id, answer_value) VALUES (?, ?, ?)";
+        jdbc.update(sql, responseId, questionId, answerValue);
 		
 	}
 	

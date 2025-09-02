@@ -4,8 +4,10 @@ public class FeedbackSession {
 	
 	 private int id;
 	 private String title;
-	 private String deadlineDate; 
+	 private String deadline_date; 
 	 private boolean published;
+	 private String created_at;
+	 
 	public int getId() {
 		return id;
 	}
@@ -18,19 +20,27 @@ public class FeedbackSession {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getDeadlineDate() {
-		return deadlineDate;
+	public String getDeadline_date() {
+		return deadline_date;
 	}
-	public void setDeadlineDate(String deadlineDate) {
-		this.deadlineDate = deadlineDate;
+	public void setDeadline_date(String deadline_date) {
+		this.deadline_date = deadline_date;
 	}
 	public boolean isPublished() {
 		return published;
 	}
+	
 	public void setPublished(boolean published) {
 		this.published = published;
 	}
+	public String getCreated_at() {
+		return created_at;
+	}
+	public void setCreated_at(String created_at) {
+		this.created_at = created_at;
+	}
 	 
+
 	 
 
 }

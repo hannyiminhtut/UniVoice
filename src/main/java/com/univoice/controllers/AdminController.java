@@ -16,10 +16,12 @@ import com.univoice.DAOS.DeptDAO;
 import com.univoice.DAOS.FeedbackDAO;
 import com.univoice.DAOS.FeedbackSessionDAO;
 import com.univoice.DAOS.IssueDAO;
+import com.univoice.DAOS.StudentDAO;
 import com.univoice.models.Department;
 import com.univoice.models.FeedbackQuestions;
 import com.univoice.models.FeedbackSession;
 import com.univoice.models.Issue;
+import com.univoice.models.Student;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +40,9 @@ public class AdminController {
 	
 	@Autowired
 	private FeedbackSessionDAO sessionDAO;
+	
+	@Autowired
+	private StudentDAO studDAO;
 	
 	@GetMapping("admin-dashboard/create")
 	public String createDepartment() {
@@ -178,6 +183,40 @@ public class AdminController {
 	        questionDAO.deleteQuestion(questionId);
 	        return "redirect:/admin-dashboard/add-question";
 	    }
+	  
+	  @GetMapping("admin-dashboard/viewDept")
+	  public String viewDeptList(Model model) {
+		  List<Department> depts = deptDAO.getAllDepartments();
+		  model.addAttribute("depts", depts);
+		  return "viewDeptList";
+	  }
+	  
+	  @GetMapping("/admindashboard/viewStud")
+	  public String viewStudList(Model model) {
+		  List<Student> studs = studDAO.getAllStudents();
+		  model.addAttribute("studs", studs);
+		  return "viewStudList";
+	  }
+	  
+	  @PostMapping("/admin-dashboard/issues/delete/{id}")
+	  public String deleteResolvedIssue(@PathVariable("id") int iD,RedirectAttributes redirectAttributes) {
+		  issueDAO.deleteIssue(iD);
+		  return "redirect:/admin-dashboard/issues";
+		
+	  }
+	  
+	  @PostMapping("admin-dashboard/deleteSession/{id}")
+	  public String deleteOverDueSession(@PathVariable("id") int iD,RedirectAttributes redirectAttributes) {
+		  try {
+			  sessionDAO.deleteSession(iD);
+			  redirectAttributes.addFlashAttribute("success", "Session is deleted ");
+		  }catch(Exception e) {
+			  redirectAttributes.addFlashAttribute("fail", "Failed to delete session! ");
+		  }
+		  return "redirect:/admin-dashboard/viewfeedback";
+	  }
+	  
+	 
 	
 
 }

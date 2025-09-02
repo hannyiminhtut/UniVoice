@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.univoice.models.Department;
 import com.univoice.models.Issue;
 import com.univoice.models.Student;
 
@@ -33,6 +34,7 @@ public class StudentImple implements StudentDAO {
             s.setName(rs.getString("name"));
             s.setEmail(rs.getString("email"));
             s.setPassword(rs.getString("password"));
+            s.setImage(rs.getString("image"));
             return s;
         }, email, password);
         return list.isEmpty() ? null : list.get(0);
@@ -57,6 +59,56 @@ public class StudentImple implements StudentDAO {
 	        
 	    );
 	}
+
+	@Override
+	public List<Student> getAllStudents() {
+		String sql = "SELECT * FROM students";
+		return jdbcTemplate.query(sql, (rs, rowNum) -> {
+	        Student stud = new Student();
+	        stud.setUser_id(rs.getInt("student_id"));
+	        stud.setName(rs.getString("name"));
+	        stud.setPassword(rs.getString("password"));
+	        stud.setImage(rs.getString("image"));
+	        stud.setEmail(rs.getString("email"));
+	        return stud;
+	    });
+		
+	}
+
+	@Override
+	public Student findById(int id) {
+		String sql = "SELECT * FROM students WHERE student_id=? ";
+		List<Student> list = jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Student s = new Student();
+            s.setUser_id(rs.getInt("student_id"));
+            s.setName(rs.getString("name"));
+            s.setEmail(rs.getString("email"));
+            s.setPassword(rs.getString("password"));
+            s.setImage(rs.getString("image"));
+            return s;
+        }, id);
+        return list.isEmpty() ? null : list.get(0);
+	}
+
+	@Override
+	public int updateProfile(Student student) {
+		final String sql =
+	            "UPDATE students SET name = ?, email = ?, password = ?, image = ? WHERE student_id = ?";
+	        return jdbcTemplate.update(sql,
+	                student.getName(),
+	                student.getEmail(),
+	                student.getPassword(),
+	                student.getImage(),
+	                student.getUser_id());
+	}
+	
+	 @Override
+	    public int updateProfileWithoutPassword(Student s) {
+	        final String sql =
+	            "UPDATE students SET name = ?, email = ?, image = ? WHERE student_id = ?";
+	        return jdbcTemplate.update(sql,
+	                s.getName(), s.getEmail(), s.getImage(), s.getUser_id());
+	    }
 
 
 

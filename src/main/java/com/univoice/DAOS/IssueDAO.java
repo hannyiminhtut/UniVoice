@@ -21,5 +21,11 @@ public interface IssueDAO {
 	int updateNoteRead(int noteId);
 	
 	int markIssueAsRead(int issueID);
+	
+	int totalPendingIss();
+	
+	int deleteIssue(int id);
+	
+	List<Issue> findIssuesByStudId(int id);
 
 }

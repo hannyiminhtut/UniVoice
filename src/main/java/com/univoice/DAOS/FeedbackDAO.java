@@ -2,6 +2,7 @@ package com.univoice.DAOS;
 
 import java.util.List;
 
+import com.univoice.models.FeedbackOptions;
 import com.univoice.models.FeedbackQuestions;
 
 public interface FeedbackDAO {
@@ -11,5 +12,10 @@ public interface FeedbackDAO {
 	List<FeedbackQuestions> findQuestionsBySession(int sessionId);
 	
 	void deleteQuestion(int questionId);
+	
+	List<FeedbackOptions> findOptionsByQuestionId(int questionId);
+	
+	void saveAnswer(int responseId, int questionId, String answerValue);
+	
 
 }
