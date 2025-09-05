@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
 <%@ page import="com.univoice.models.Department"%>
+<%@ page import="com.univoice.models.Admin" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,11 +28,19 @@
       <a href="/admin-dashboard" class="text-decoration-none">Admin Dashboard</a>
     </div>
     <div class="d-flex align-items-center gap-3">
-      <a href="#" class="text-decoration-none position-relative"><i class="fa-solid fa-envelopes-bulk"></i></a>
-      <a href="#" class="text-decoration-none position-relative"><i class="fa-solid fa-bell"></i></a>
+      
       <div class="d-flex align-items-center">
-        <img src="../assets/imgs/blank-profile.webp" class="rounded-circle me-2" width="35" height="33" style="object-fit:cover;">
-        <div class="fw-bold">Admin</div>
+       	<%
+     		Admin admin = (Admin)session.getAttribute("admin");
+     		String imagePath = admin.getImage();
+     	%>
+     	<!-- Profile Link -->
+		<a href="/admin-dashboard/profile" class="d-flex align-items-center text-decoration-none">
+		    <img src="<%= imagePath != null ? imagePath : "../assets/imgs/blank-profile.webp" %>" 
+		         class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
+		    <span class="fw-bold text-dark"><%= admin.getName() %></span>
+		</a>
+        
       </div>
     </div>
   </div>

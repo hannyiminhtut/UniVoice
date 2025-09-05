@@ -28,24 +28,20 @@
         <!-- Right-side icons and profile -->
         <div class="d-flex align-items-center gap-3">
         
-            <!-- Message icon -->
-            <a href="" class="text-decoration-none position-relative">
-                <i class="fa-solid fa-envelopes-bulk"></i>
-            </a>
+          
             
-            <!-- Notification icon -->
+           <!-- Notification icon -->
 			<a href="" class="text-decoration-none position-relative">
 			    <i class="fa-solid fa-bell fs-5"></i>
 			    <% 
-			    	List<Issue> problems = (List<Issue>) request.getAttribute("issues");
+			        List<Issue> problems = (List<Issue>) request.getAttribute("issues");
 			        long unreadCount = problems.stream().filter(i -> !i.getRead_dept()).count();
 			        if (unreadCount > 0) { 
 			    %>
-			        <span id="bellDot" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
-			        	<%= unreadCount %>
-			        </span>
+			        <span id="bellDot" class="notify-badge"><%= unreadCount %></span>
 			    <% } %>
 			</a>
+			           
             
            <!-- Profile Dropdown -->
 			<div class="dropdown">
@@ -74,16 +70,7 @@
 <div class="container mt-4">
     <h4 class="mb-4 text-center"> <i class="fa-solid fa-list-check me-2 text-primary"></i>Received Issues</h4>
     <div class="row g-4">
-        <%
-            List<Issue> issues = (List<Issue>) request.getAttribute("issues");
-            if (issues != null && !issues.isEmpty()) {
-                int index = 0;
-                for (Issue issue : issues) {
-                    String modalId = "issueModal" + index;
-        %>
-    <div class="col-md-4">
-    		
-		<% if (request.getAttribute("success") != null) { %>
+    	<% if (request.getAttribute("success") != null) { %>
   			<div class="alert alert-success" role="alert">
    				 <%= request.getAttribute("success") %>
   			</div>
@@ -94,6 +81,17 @@
 		    <%= request.getAttribute("fail") %>
 		  </div>
 		<% } %>
+        <%
+            List<Issue> issues = (List<Issue>) request.getAttribute("issues");
+            if (issues != null && !issues.isEmpty()) {
+                int index = 0;
+                for (Issue issue : issues) {
+                    String modalId = "issueModal" + index;
+        %>
+        
+    <div class="col-md-4">
+    		
+		
 		
 	  <div class="issue-card position-relative"
 	       onclick="openIssueModal('<%= modalId %>', <%= issue.getIssue_id() %>)">
@@ -195,6 +193,11 @@ function openIssueModal(modalId, issueId) {
           }
       });
 }
+
+setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => alert.remove());
+}, 5000);
 </script>
 
 <!-- Bootstrap JS -->

@@ -106,3 +106,21 @@
 		.navbar a:hover img {
 		    transform: scale(1.1);
 		}
+		
+	.notify-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  background: #ef4444;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px #fff; /* gives a clean border on white bg */
+}
+		

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ page import="com.univoice.models.Issue" %>
 <%@ page import="com.univoice.models.Department" %>
+<%@ page import="com.univoice.models.Admin" %>
 <%@ page import="java.util.List" %>
 <%
     Issue issue = (Issue)request.getAttribute("issue");
@@ -38,7 +39,7 @@
   /* BIG red trash button in the top-right of the card */
   .issue-trash-btn{
     position:absolute; top:12px; right:12px; z-index:5;
-    width:46px; height:46px; border-radius:999px; border:none;
+    width:36px; height:36px; border-radius:999px; border:none;
     display:flex; align-items:center; justify-content:center;
     background:#ef4444; color:#fff; box-shadow:0 4px 10px rgba(239,68,68,.25);
     cursor:pointer; transition:transform .1s ease, box-shadow .15s ease, background .15s ease;
@@ -56,11 +57,20 @@
       <div class="fw-bold fs-5 text-dark"><a href="/admin-dashboard" style="text-decoration:none;">Admin Dashboard</a></div>
     </div>
     <div class="d-flex align-items-center gap-3">
-      <a href="#" class="text-decoration-none position-relative"><i class="fa-solid fa-envelopes-bulk"></i></a>
-      <a href="#" class="text-decoration-none position-relative"><i class="fa-solid fa-bell"></i></a>
+      
+    
       <div class="d-flex align-items-center">
-        <img src="../../assets/imgs/blank-profile.webp" class="rounded-circle me-2" width="35" height="33" style="object-fit:cover;">
-        <div class="text-end"><div class="fw-bold">Admin</div></div>
+        	<%
+	     		Admin admin = (Admin)session.getAttribute("admin");
+	     		String img = admin.getImage();
+	     		%>
+		     	<!-- Profile Link -->
+				<a href="/admin-dashboard/profile" class="d-flex align-items-center text-decoration-none">
+				    <img src="<%= img != null ? img : "../assets/imgs/blank-profile.webp" %>" 
+				         class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
+				    <span class="fw-bold text-dark"><%= admin.getName() %></span>
+				</a>
+      
       </div>
     </div>
   </div>
@@ -75,7 +85,16 @@
             onclick="if(confirm('Delete this issue?')){ document.getElementById('deleteForm').submit(); }">
       <i class="fa-solid fa-trash"></i>
     </button>
-  <% } %>
+    
+  <% }else if("pending".equalsIgnoreCase(flag)){ %>
+  
+  	<form id="bannedForm" action="<%= request.getContextPath() %>/admin-dashboard/issues/banned/<%= issue.getIssue_id() %>" method="post" style="display:none;"></form>
+    <button type="button" class="issue-trash-btn" title="Banned issue"
+            onclick="if(confirm('Banned this issue?')){ document.getElementById('bannedForm').submit(); }">
+      <i class="fa-solid fa-ban"></i>
+    </button>
+  
+ <%	} %> 
 
   <div class="issue-header">
     <h3><i class="fa-solid fa-triangle-exclamation me-2"></i><%= title %></h3>

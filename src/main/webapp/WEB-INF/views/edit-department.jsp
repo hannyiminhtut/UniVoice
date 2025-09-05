@@ -66,7 +66,7 @@
           <small class="text-muted">ID: <%= dept.getId() %></small>
         </div>
         <img class="avatar-lg" src="<%= imageVal %>" alt="Department image"
-             onerror="this.src='../assets/imgs/blank-profile.webp'">
+             onerror="this.src='./assets/imgs/blank-profile.webp'">
       </div>
 
       <div class="card-body">

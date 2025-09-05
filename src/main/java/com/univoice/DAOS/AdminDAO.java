@@ -6,6 +6,6 @@ public interface AdminDAO {
 	
 	Admin findbyEmailandPassword(String email,String password);
 	
-	
+	int updateProfileImage(int aId,String imagePath);
 
 }

@@ -98,7 +98,7 @@ public String showAboutPage() {
 @PostMapping("/check")
 public String login(@RequestParam("email") String email,
                     @RequestParam("password") String password,
-                    HttpServletRequest request) {
+                    HttpServletRequest request,RedirectAttributes redirectAttributes) {
 
     HttpSession session = request.getSession();
 
@@ -117,7 +117,8 @@ public String login(@RequestParam("email") String email,
             	session.setAttribute("department", department);
             	return "redirect:/department-dashboard";
             }else {
-            	  return "redirect:/login?error=invalid";
+            		redirectAttributes.addFlashAttribute("fail", "Failed to login, please try again!");
+            	  return "redirect:/login";
             }
            
            
@@ -212,11 +213,16 @@ public String showAdminDashboard(HttpSession session,Model model,HttpServletRequ
 	int totalStud = studentDAO.getTotalStud();
 	int totalSes = sessionDAO.getTotal();
 	int totalPen = issueDAO.totalPendingIss();
+	int unseenPen = issueDAO.totalUnseenPending(); 
+	
 	model.addAttribute("totalDept", totalDept);
 	model.addAttribute("totalStud", totalStud);
 	model.addAttribute("totalSes", totalSes);
 	model.addAttribute("totalPen", totalPen);
 	req.setAttribute("sessions", sessionDAO.findAll() );
+	
+	 model.addAttribute("unseenPen", unseenPen);
+	 model.addAttribute("pendingBell", unseenPen > 0);
 	
 	
 	return "admin-dashboard";

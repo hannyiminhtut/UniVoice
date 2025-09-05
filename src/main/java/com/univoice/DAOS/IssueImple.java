@@ -28,7 +28,7 @@ public class IssueImple implements IssueDAO {
             i.setCreated_at(rs.getString("created_at"));
             i.setStatus(rs.getString("status"));
             i.setNote(rs.getString("note"));
-            i.setNote_read(rs.getBoolean("read_note"));
+            i.setRead_note(rs.getBoolean("read_note"));
             return i;
         });
 		
@@ -142,11 +142,53 @@ public class IssueImple implements IssueDAO {
 	        i.setNote(rs.getString("note"));
 	        i.setCreated_at(rs.getString("created_at"));
 	        i.setResolved_at(rs.getString("resolved_at"));
-	        i.setNote_read((Boolean) rs.getObject("read_note"));
+	        i.setRead_note((Boolean) rs.getObject("read_note"));
 	        i.setRead_dept((Boolean) rs.getObject("read_dept"));
 	        return i;
 	    }, id);
 	}
+
+	@Override
+	public int totalUnseenPending() {
+	    String sql = "SELECT COUNT(*) FROM issues WHERE status = 'pending' AND admin_read = FALSE";
+	    return jdbcTemplate.queryForObject(sql, Integer.class);
+	}
+
+	@Override
+	public int markAllPendingAsSeen() {
+	    String sql = "UPDATE issues SET admin_read = TRUE WHERE status = 'pending' AND admin_read = FALSE";
+	    return jdbcTemplate.update(sql);
+	}
+
+	@Override
+	public int archiveResolvedByAdmin(int issueId) {
+		String sql = "UPDATE issues SET admin_deleted=1 WHERE issue_id=? AND status='resolved'";
+	    return jdbcTemplate.update(sql, issueId);
+	}
+
+	  @Override
+	    public List<Issue> findAllForAdmin() {
+	        String sql = "SELECT * FROM issues WHERE admin_deleted = 0 ORDER BY created_at DESC";
+	        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+	            Issue i = new Issue();
+	            i.setIssue_id(rs.getInt("issue_id"));
+	            i.setTitle(rs.getString("title"));
+	            i.setCreated_at(rs.getString("created_at"));
+	            i.setStatus(rs.getString("status"));
+	            i.setNote(rs.getString("note"));
+	            i.setRead_note(rs.getBoolean("read_note"));
+	            return i;
+	        });
+	    }
+
+	@Override
+	public int bannedIssue(int id) {
+		
+		String sql = "UPDATE issues SET status = 'banned',admin_deleted = 1, resolved_at = now() WHERE issue_id = ?";
+		return jdbcTemplate.update(sql, id);
+	}
+
+
 
 
 

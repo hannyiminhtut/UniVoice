@@ -27,5 +27,16 @@ public interface IssueDAO {
 	int deleteIssue(int id);
 	
 	List<Issue> findIssuesByStudId(int id);
+	
+	int totalUnseenPending();    
+	
+	int markAllPendingAsSeen();
+	
+	int archiveResolvedByAdmin(int issueId);
+	
+	List<Issue> findAllForAdmin();
+	
+	int bannedIssue(int id);
+
 
 }

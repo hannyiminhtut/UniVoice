@@ -1,23 +1,22 @@
-  body {
-        background-color: #f0f4f8;
-        padding-top: 80px; /* Makes space for the fixed navbar */
-        display: flex;
-        justify-content: center;
-        align-items: flex-start; /* Align form below navbar */
-        height: 100vh;
-    }
-    .login-card {
-        background-color: #fff;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 25px rgba(0, 0, 139, 0.4); 
-        width: 100%;
-        max-width: 400px;
-    }
+ body{
+    background-color:#f0f4f8;
+    padding-top:80px; /* space for fixed navbar */
+    display:flex; justify-content:center; align-items:flex-start;
+    min-height:100vh;
+  }
+  
+  .login-card{
+    background:#fff; padding:30px; border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,139,.4);
+    width:100%; max-width:400px;
+  }
+  
     .form-label {
         font-weight: 500;
     }
-   
+    
     .nav-custom {
         background-color: #0056b3; 
     }
+    
+    .login-card .alert{ border-radius:12px; margin-bottom:16px; }

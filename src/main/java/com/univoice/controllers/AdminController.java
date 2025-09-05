@@ -1,5 +1,10 @@
 package com.univoice.controllers;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,13 +15,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.univoice.DAOS.AdminDAO;
 import com.univoice.DAOS.DeptDAO;
 import com.univoice.DAOS.FeedbackDAO;
 import com.univoice.DAOS.FeedbackSessionDAO;
 import com.univoice.DAOS.IssueDAO;
 import com.univoice.DAOS.StudentDAO;
+import com.univoice.models.Admin;
 import com.univoice.models.Department;
 import com.univoice.models.FeedbackQuestions;
 import com.univoice.models.FeedbackSession;
@@ -44,6 +52,9 @@ public class AdminController {
 	@Autowired
 	private StudentDAO studDAO;
 	
+	@Autowired
+	private AdminDAO adminDAO;
+	
 	@GetMapping("admin-dashboard/create")
 	public String createDepartment() {
 		return "create-department";
@@ -55,11 +66,22 @@ public class AdminController {
 	}
 	
 	@GetMapping("admin-dashboard/issues")
-	public String viewIssues(Model model) {
-		List<Issue> issues = issueDAO.getAllIssues();
-		model.addAttribute("issues", issues);
-		return "view-issues";
+	public String viewIssues(Model model, HttpSession session) {
+	    List<Issue> issues = issueDAO.findAllForAdmin();
+	    model.addAttribute("issues", issues);
+
+	    // ✅ Admin is viewing issues → mark all current pending as seen
+	    issueDAO.markAllPendingAsSeen();
+
+	    int totalPen = issueDAO.totalPendingIss(); // still show total count on page if needed
+	    model.addAttribute("totalPen", totalPen);
+	    model.addAttribute("unseenPen", 0);
+	    model.addAttribute("pendingBell", false);
+
+
+	    return "view-issues";
 	}
+
 	
 	 @GetMapping("admin-dashboard/issues/{id}")
 	    public String viewIssueDetails(@PathVariable("id") int id, Model model,HttpServletRequest request) {
@@ -112,6 +134,20 @@ public class AdminController {
 		    }
 		 
 		 return "redirect:/admin-dashboard/issues";
+	 }
+	 
+	 @PostMapping("admin-dashboard/issues/banned/{id}")
+	 public String bannedIssue(@PathVariable("id") int iD,RedirectAttributes redirectAttributes) {
+		 int rows = issueDAO.bannedIssue(iD);
+		 if (rows > 0) {
+		        redirectAttributes.addFlashAttribute("success", "Issue is banned ");
+		    } else {
+		        redirectAttributes.addFlashAttribute("error", "Issue not found!");
+		    }
+		 
+		 return "redirect:/admin-dashboard/issues";
+		 
+		
 	 }
 	 
 	 @PostMapping("/admin-dashboard/create-session")
@@ -200,7 +236,7 @@ public class AdminController {
 	  
 	  @PostMapping("/admin-dashboard/issues/delete/{id}")
 	  public String deleteResolvedIssue(@PathVariable("id") int iD,RedirectAttributes redirectAttributes) {
-		  issueDAO.deleteIssue(iD);
+		  issueDAO.archiveResolvedByAdmin(iD);
 		  return "redirect:/admin-dashboard/issues";
 		
 	  }
@@ -214,6 +250,47 @@ public class AdminController {
 			  redirectAttributes.addFlashAttribute("fail", "Failed to delete session! ");
 		  }
 		  return "redirect:/admin-dashboard/viewfeedback";
+	  }
+	  
+	  @GetMapping("admin-dashboard/profile")
+	  public String uploadProfile(HttpSession session,Model model) {
+	  	Admin admin = (Admin) session.getAttribute("admin");
+	  	model.addAttribute("admin", admin);
+	  	return "admin-profile";
+	  }
+	  
+	  @PostMapping("/admin-dashboard/updateProfilePic")
+	  public String updateProfilePic(@RequestParam("profilePic") MultipartFile file,
+	  								@RequestParam("aID") int aID,
+	                                 HttpSession session, RedirectAttributes redirectAttributes) {
+	      try {
+	          // Ensure upload directory exists
+	          String uploadDir = "C:/uploads/admin";
+	          File dir = new File(uploadDir);
+	          if (!dir.exists()) dir.mkdirs();
+
+	          // Save uploaded file
+	          String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+	          Path path = Paths.get(uploadDir,fileName);
+	          Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+
+	          // Get logged-in department from session
+	          Admin admin = (Admin) session.getAttribute("admin");
+
+	          // Save relative path for web access (not absolute disk path)
+	          String imagePath = "/uploads/admin/" + fileName;
+	          adminDAO.updateProfileImage(aID, imagePath);
+
+	          // Update session object too
+	          admin.setImage(imagePath);
+	          session.setAttribute("admin", admin);
+
+	          redirectAttributes.addFlashAttribute("success", "Profile picture updated successfully!");
+	      } catch (Exception e) {
+	          e.printStackTrace();
+	          redirectAttributes.addFlashAttribute("error", "Failed to upload profile picture.");
+	      }
+	      return "redirect:/admin-dashboard";
 	  }
 	  
 	 

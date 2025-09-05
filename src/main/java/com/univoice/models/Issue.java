@@ -14,10 +14,11 @@ public class Issue {
 	private String status;
 	private String note;
 	private String created_at;
-	private Boolean note_read;
+	private Boolean read_note;
 	private Boolean read_dept;
+	private Boolean admin_read;
 	private String resolved_at;
-	
+	private Boolean admin_deleted;
 	
 	
 	public String getResolved_at() {
@@ -146,14 +147,6 @@ public class Issue {
 		this.created_at = created_at;
 	}
 
-	public Boolean getNote_read() {
-		return note_read;
-	}
-
-	public void setNote_read(Boolean note_read) {
-		this.note_read = note_read;
-	}
-
 	public Boolean getRead_dept() {
 		return read_dept;
 	}
@@ -161,6 +154,34 @@ public class Issue {
 	public void setRead_dept(Boolean read_dept) {
 		this.read_dept = read_dept;
 	}
+
+	public Boolean getAdmin_read() {
+		return admin_read;
+	}
+
+	public void setAdmin_read(Boolean admin_read) {
+		this.admin_read = admin_read;
+	}
+
+	public Boolean getAdmin_deleted() {
+		return admin_deleted;
+	}
+
+	public void setAdmin_deleted(Boolean admin_deleted) {
+		this.admin_deleted = admin_deleted;
+	}
+
+	public Boolean getRead_note() {
+		return read_note;
+	}
+
+	public void setRead_note(Boolean read_note) {
+		this.read_note = read_note;
+	}
+	
+	
+	
+	
 	
 	
 	

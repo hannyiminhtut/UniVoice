@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.univoice.models.Admin" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,21 +58,20 @@ body {
 
         <!-- Right-side icons and profile -->
         <div class="d-flex align-items-center gap-3">
-            <!-- Message icon -->
-            <a href="#" class="text-decoration-none position-relative">
-                <i class="fa-solid fa-envelopes-bulk"></i>
-            </a>
-            <!-- Notification icon -->
-            <a href="#" class="text-decoration-none position-relative">
-                <i class="fa-solid fa-bell"></i>
-            </a>
+        
+            
             <!-- Profile -->
             <div class="d-flex align-items-center">
-                <img src="../assets/imgs/blank-profile.webp" class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
-                <div class="text-end">
-                    <div class="fw-bold">Admin</div>
-                   
-                </div>
+            <%
+     		Admin admin = (Admin)session.getAttribute("admin");
+     		String imagePath = admin.getImage();
+     		%>
+	     	<!-- Profile Link -->
+			<a href="/admin-dashboard/profile" class="d-flex align-items-center text-decoration-none">
+			    <img src="<%= imagePath != null ? imagePath : "../assets/imgs/blank-profile.webp" %>" 
+			         class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
+			    <span class="fw-bold text-dark"><%= admin.getName() %></span>
+			</a>
             </div>
         </div>
     </div>
@@ -134,16 +134,39 @@ body {
 <script>
 
 function validateForm() {
+	  const email = document.getElementById('email').value.trim();
 	  const pwd = document.getElementById('password').value;
 	  const repwd = document.getElementById('repassword').value;
+
 	  const pwdHelp = document.getElementById('passwordHelp');
 	  const matchHelp = document.getElementById('matchHelp');
 
-	  // Strong password pattern
+	  // Create / show a help div for email if not already
+	  let emailHelp = document.getElementById('emailHelp');
+	  if (!emailHelp) {
+	    const el = document.createElement('div');
+	    el.id = "emailHelp";
+	    el.className = "form-text text-danger d-none";
+	    document.getElementById('email').insertAdjacentElement('afterend', el);
+	    emailHelp = el;
+	  }
+
+	  // Patterns
 	  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+	  const emailRegex = /^[A-Za-z0-9._%+-]+@uit\.edu\.mm$/i;
 
 	  let isValid = true;
 
+	  // Email check
+	  if (!emailRegex.test(email)) {
+	    emailHelp.textContent = "Email must end with @uit.edu.mm";
+	    emailHelp.classList.remove('d-none');
+	    isValid = false;
+	  } else {
+	    emailHelp.classList.add('d-none');
+	  }
+
+	  // Password strength
 	  if (!strongRegex.test(pwd)) {
 	    pwdHelp.classList.remove('d-none');
 	    isValid = false;
@@ -151,6 +174,7 @@ function validateForm() {
 	    pwdHelp.classList.add('d-none');
 	  }
 
+	  // Password match
 	  if (pwd !== repwd) {
 	    matchHelp.classList.remove('d-none');
 	    isValid = false;
@@ -160,11 +184,11 @@ function validateForm() {
 
 	  return isValid;
 	}
-	
-setTimeout(() => {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach(alert => alert.remove());
-}, 5000);
+
+	setTimeout(() => {
+	  const alerts = document.querySelectorAll('.alert');
+	  alerts.forEach(alert => alert.remove());
+	}, 5000);
 	
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" ></script>

@@ -48,7 +48,15 @@
       <!-- Email -->
       <div class="mb-2">
         <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="your@uit.edu.mm" required>
+        <input type="email" 
+       class="form-control" 
+       id="email" 
+       name="email" 
+       placeholder="your@uit.edu.mm" 
+       pattern="^[a-zA-Z0-9._%+-]+@uit\.edu\.mm$" 
+       required>
+       
+	  <div id="emailHelp" class="form-text text-danger d-none">Email must end with @uit.edu.mm</div>
       </div>
 
       <!-- Name -->
@@ -79,32 +87,44 @@
 <!-- form validation -->
 <script>
 function validateForm() {
-  const pwd = document.getElementById('password').value;
-  const repwd = document.getElementById('repassword').value;
-  const pwdHelp = document.getElementById('passwordHelp');
-  const matchHelp = document.getElementById('matchHelp');
+	  const email = document.getElementById('email').value.trim();
+	  const emailHelp = document.getElementById('emailHelp');
+	  const pwd = document.getElementById('password').value;
+	  const repwd = document.getElementById('repassword').value;
+	  const pwdHelp = document.getElementById('passwordHelp');
+	  const matchHelp = document.getElementById('matchHelp');
 
-  // Strong password pattern
-  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+	  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+	  const emailRegex = /^[a-zA-Z0-9._%+-]+@uit\.edu\.mm$/;
 
-  let isValid = true;
+	  let isValid = true;
 
-  if (!strongRegex.test(pwd)) {
-    pwdHelp.classList.remove('d-none');
-    isValid = false;
-  } else {
-    pwdHelp.classList.add('d-none');
-  }
+	  // Validate email domain
+	  if (!emailRegex.test(email)) {
+	    emailHelp.classList.remove('d-none');
+	    isValid = false;
+	  } else {
+	    emailHelp.classList.add('d-none');
+	  }
 
-  if (pwd !== repwd) {
-    matchHelp.classList.remove('d-none');
-    isValid = false;
-  } else {
-    matchHelp.classList.add('d-none');
-  }
+	  // Validate strong password
+	  if (!strongRegex.test(pwd)) {
+	    pwdHelp.classList.remove('d-none');
+	    isValid = false;
+	  } else {
+	    pwdHelp.classList.add('d-none');
+	  }
 
-  return isValid;
-}
+	  // Validate matching passwords
+	  if (pwd !== repwd) {
+	    matchHelp.classList.remove('d-none');
+	    isValid = false;
+	  } else {
+	    matchHelp.classList.add('d-none');
+	  }
+
+	  return isValid;
+	}
 </script>
 
 

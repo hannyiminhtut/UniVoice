@@ -5,6 +5,7 @@
 <%@ page import="java.time.format.*"%>
 <%@ page import="com.univoice.models.FeedbackSession"%>
 <%@ page import="com.univoice.models.Issue"%>
+<%@ page import="com.univoice.models.Admin" %>
 
 <!DOCTYPE html>
 <html>
@@ -24,16 +25,31 @@
     </div>
 
     <div class="d-flex align-items-center gap-3">
-      <a href="#" class="text-decoration-none position-relative">
-        <i class="fa-solid fa-envelopes-bulk"></i>
-      </a>
-      <a href="#" class="text-decoration-none position-relative">
-        <i class="fa-solid fa-bell"></i>
-      </a>
-      <div class="d-flex align-items-center">
-        <img src="../assets/imgs/blank-profile.webp" class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
-        <div class="text-end"><div class="fw-bold">Admin</div></div>
-      </div>
+     	<a href="/admin-dashboard/issues" class="text-decoration-none position-relative" title="Pending issues">
+		  <i class="fa-solid fa-bell"></i>
+		  <%
+		    Boolean pendingBell = (Boolean) request.getAttribute("pendingBell");
+		    Integer unseenPen    = (Integer) request.getAttribute("unseenPen");
+		    if (pendingBell != null && pendingBell) {
+		  %>
+		    <span class="notify-badge"><%= (unseenPen != null ? unseenPen : 0) %></span>
+		  <%
+		    }
+		  %>
+		</a>
+     	
+     	
+     	<%
+     		Admin admin = (Admin)session.getAttribute("admin");
+     		String imagePath = admin.getImage();
+     	%>
+     	<!-- Profile Link -->
+		<a href="/admin-dashboard/profile" class="d-flex align-items-center text-decoration-none">
+		    <img src="<%= imagePath != null ? imagePath : "../assets/imgs/blank-profile.webp" %>" 
+		         class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
+		    <span class="fw-bold text-dark"><%= admin.getName() %></span>
+		</a>
+     	
     </div>
   </div>
 </nav>
@@ -49,6 +65,18 @@
 <div class="main-content">
   <div class="container-fluid">
    <div class="row g-4">
+   
+   		<% if (request.getAttribute("success") != null) { %>
+  			<div class="alert alert-success" role="alert">
+   				 <%= request.getAttribute("success") %>
+  			</div>
+		<% } %>
+
+		<% if (request.getAttribute("fail") != null) { %>
+		  <div class="alert alert-danger" role="alert">
+		    <%= request.getAttribute("fail") %>
+		  </div>
+		<% } %>
 
   <!-- Sessions -->
   <div class="col-6 col-md-3 d-flex">
@@ -145,5 +173,31 @@
       }
     });
   });
+  
+  $(function () {
+	    // Instantly remove the badge when navigating to Issues
+	    // Handles BOTH absolute and relative links used in your navbar & sidebar
+	    $(document).on(
+	      'click',
+	      'a[href="/admin-dashboard/issues"], a[href="admin-dashboard/issues"]',
+	      function () {
+	        $('.notify-badge').remove();
+	      }
+	    );
+
+	    // If the browser shows a cached dashboard when you hit Back,
+	    // force a refresh so unseenPen/pendingBell are recomputed from the DB.
+	    window.addEventListener('pageshow', function (e) {
+	      if (e.persisted) {
+	        // Page was restored from bfcache — reload to get fresh server state
+	        location.reload();
+	      }
+	    });
+	  });
+  
+  setTimeout(() => {
+	    const alerts = document.querySelectorAll('.alert');
+	    alerts.forEach(alert => alert.remove());
+	}, 5000);
 </script>
 </body>

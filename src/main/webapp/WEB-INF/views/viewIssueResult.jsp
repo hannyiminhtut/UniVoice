@@ -97,6 +97,7 @@
     .badge-pending   { background:#fee2e2; color:#991b1b; }
     .badge-assigned  { background:#fff7e6; color:#92400e; }
     .badge-resolved  { background:#dcfce7; color:#166534; }
+    .badge-banned	 { background-color: #dc2626; color: #fff}
 
     /* Image */
     .img-wrap img{
@@ -231,6 +232,7 @@
               if ("pending".equals(statusLower))      statusBadge += " badge-pending";
               else if ("assigned".equals(statusLower)) statusBadge += " badge-assigned";
               else if ("resolved".equals(statusLower)) statusBadge += " badge-resolved";
+              else if("banned".equals(statusLower)) statusBadge += " badge-banned";
 
               // Description & Location
               String desc = it.getDescription() != null ? it.getDescription() : "-";

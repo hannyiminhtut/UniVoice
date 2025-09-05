@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="com.univoice.models.Issue" %>
+<%@ page import="com.univoice.models.Admin" %>
 <%@ page import="java.util.List" %>
 <%
     List<Issue> issues = (List<Issue>) request.getAttribute("issues");
@@ -21,7 +22,7 @@
     int noteCount = 0;
     if (issues != null) {
         for (Issue i : issues) {
-            if (i.getNote() != null && !i.getNote().trim().isEmpty() && !i.getNote_read()) {
+            if (i.getNote() != null && !i.getNote().trim().isEmpty() && !i.getRead_note()) {
                 noteCount++;
             }
         }
@@ -38,11 +39,7 @@
         <!-- Right-side icons and profile -->
         <div class="d-flex align-items-center gap-4">
 
-            <!-- Envelope -->
-            <a href="<%= request.getContextPath() %>/admin-dashboard/issues/notes" 
-               class="text-decoration-none position-relative d-flex align-items-center">
-                <i class="fa-solid fa-envelopes-bulk fs-5"></i>
-            </a>
+           
 
 			<a href="#" id="bellBtn" class="text-decoration-none position-relative d-flex align-items-center">
 			    <i class="fa-solid fa-bell fs-5"></i>
@@ -56,11 +53,16 @@
 
             <!-- Profile -->
             <div class="d-flex align-items-center">
-                <img src="../assets/imgs/blank-profile.webp" 
-                     class="rounded-circle" width="35" height="35" style="object-fit: cover;">
-                <div class="ms-2">
-                    <div class="fw-bold">Admin</div>
-                </div>
+	            <%
+	     		Admin admin = (Admin)session.getAttribute("admin");
+	     		String imagePath = admin.getImage();
+	     		%>
+		     	<!-- Profile Link -->
+				<a href="/admin-dashboard/profile" class="d-flex align-items-center text-decoration-none">
+				    <img src="<%= imagePath != null ? imagePath : "../assets/imgs/blank-profile.webp" %>" 
+				         class="rounded-circle me-2" width="35" height="33" style="object-fit: cover;">
+				    <span class="fw-bold text-dark"><%= admin.getName() %></span>
+				</a>
             </div>
         </div>
     </div>
@@ -116,10 +118,12 @@
                     <span class="badge bg-warning text-dark"><i class="fa-solid fa-user-check me-1"></i> Assigned</span>
                 <% } else if ("resolved".equalsIgnoreCase(issue.getStatus())) { %>
                     <span class="badge bg-success"><i class="fa-solid fa-circle-check me-1"></i> Resolved</span>
-                <% } %>
+                <% } else if ("banned".equalsIgnoreCase(issue.getStatus())) { %>
+                	<span class="badge bg-dark"><i class="fa-solid fa-circle-check me-1"></i> Banned</span>
+               <%  } %> 
             </p>
 
-            <% if (issue.getNote() != null && !issue.getNote().trim().isEmpty() && !issue.getNote_read()) { %>
+            <% if (issue.getNote() != null && !issue.getNote().trim().isEmpty() && !issue.getRead_note()) { %>
     			 <span class="unread-dot position-absolute"></span>
 			<% } %>
         </div>

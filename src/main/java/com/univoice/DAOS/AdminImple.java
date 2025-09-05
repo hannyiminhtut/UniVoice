@@ -25,10 +25,17 @@ public class AdminImple implements AdminDAO {
             a.setName(rs.getString("name"));
             a.setEmail(rs.getString("email"));
             a.setPassword(rs.getString("password"));
+            a.setImage(rs.getString("image"));
             return a;
         }, email, password);
         return list.isEmpty() ? null : list.get(0);
     }
+
+	@Override
+	public int updateProfileImage(int aId, String imagePath) {
+		String sql = "UPDATE admin SET image = ? WHERE id = ?";
+		return jdbcTemplate.update(sql,imagePath,aId);
+	}
 	
 
 	
