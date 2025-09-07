@@ -6,10 +6,16 @@ body {
     background-color: #F8F8F8; /* fallback for the lower section */
 }
 
-/* Gradient only for top section */
 .top-section {
-    background: linear-gradient(to right, #0C2587, #10B6E8);
+    background: url("../assets/imgs/homepg.jpg") no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed; /* optional for parallax */
+    min-height: 80vh; /* takes full screen height */
 }
+
+
+
+ 
 
 
 
@@ -56,11 +62,13 @@ body {
     font-weight: 700;
     font-size: 3rem;
     color: #ffff; /* darker navy shade */
+    margin-top: 80px;
 }
 
 .hero-section .lead {
     color: #ffff;
     margin: 40px auto 1.5rem auto; /* change to any color you want */
+    margin-top: 50px;
 }
 
 
@@ -73,7 +81,7 @@ body {
     font-weight: bold;
     border-radius: 30px;
     transition: background 0.3s ease;
-    margin-top: 90px;
+    margin-top: 70px;
     margin-bottom: 50px;
 }
 
@@ -151,6 +159,12 @@ body {
     border-radius: 12px;
 }
 
+
+
+/* On hover -> only shadow, no movement */
+.why-use-section img:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
 
 
 .departments-section { background: #F8F8F8; } /* keeps page bg the same */

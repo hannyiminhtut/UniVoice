@@ -9,6 +9,21 @@
   <link href="../assets/css/adminstyle.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
   <style>
+    /* ===== Navbar (same style as other admin pages) ===== */
+    .navbar { 
+      height: 65px;
+      border-bottom: 1px solid #eee;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; 
+      background: #fff;
+    }
+    .navbar .fw-bold a {
+      font-size: 25px;
+      font-weight: 700;
+      color: #000066;
+      text-decoration: none;
+    }
+
+    /* Card styling */
     .page-card { border:0; border-radius:14px; box-shadow:0 10px 26px rgba(0,0,0,.08); }
     .page-card .card-header { background:#fff; border-bottom:1px solid #eef2f7; }
     .avatar-lg {
@@ -20,6 +35,7 @@
 </head>
 <body>
 
+<!-- Navbar -->
 <nav class="navbar navbar-expand-lg bg-white shadow-sm px-3">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <div class="fw-bold fs-5">
@@ -48,25 +64,21 @@
     String passVal = dept.getPassword() != null ? dept.getPassword() : "";
     String imageVal = dept.getImage() != null ? dept.getImage() : "../assets/imgs/blank-profile.webp";
 %>
-	<div class="noti" >
 
-		<% if (request.getAttribute("fail") != null) { %>
-		  <div class="alert alert-danger" role="alert">
-		    <%= request.getAttribute("fail") %>
-		  </div>
-		<% } %>
-		
-		</div>
+    <% if (request.getAttribute("fail") != null) { %>
+      <div class="alert alert-danger" role="alert">
+        <%= request.getAttribute("fail") %>
+      </div>
+    <% } %>
+
     <div class="card page-card">
-    
-    
       <div class="card-header d-flex align-items-center justify-content-between">
         <div>
           <h5 class="mb-0 fw-semibold">Edit Department</h5>
           <small class="text-muted">ID: <%= dept.getId() %></small>
         </div>
         <img class="avatar-lg" src="<%= imageVal %>" alt="Department image"
-             onerror="this.src='./assets/imgs/blank-profile.webp'">
+             onerror="this.src='../assets/imgs/blank-profile.webp'">
       </div>
 
       <div class="card-body">
@@ -99,15 +111,10 @@
               </div>
               <div class="form-text">Click the eye to view the current password.</div>
             </div>
-
-            <!-- Image field removed intentionally (admin cannot change profile image) -->
-
           </div>
 
           <div class="d-flex gap-2 mt-4">
-            <button type="submit" class="btn btn-primary">
-              Save Changes
-            </button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
             <a href="<%= ctx %>/admin-dashboard/viewDept" class="btn btn-outline-secondary">Cancel</a>
           </div>
         </form>
@@ -145,11 +152,11 @@
       });
     }
   })();
-  
+
+  // Auto-dismiss alerts
   setTimeout(() => {
-	    const alerts = document.querySelectorAll('.alert');
-	    alerts.forEach(alert => alert.remove());
-	}, 5000);
+    document.querySelectorAll('.alert').forEach(a => a.remove());
+  }, 5000);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>

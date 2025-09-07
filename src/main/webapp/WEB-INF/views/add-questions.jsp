@@ -11,15 +11,53 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    .card { border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,139,.1);}
-    .star-rating i { font-size: 1.5rem; color:#ccc; cursor:pointer; }
-    .star-rating .checked { color: gold; }
+    /* Stronger card shadows for both forms */
+    .card { 
+      border-radius: 16px; 
+      box-shadow: 0 8px 20px rgba(0,0,0,.12); 
+      transition: box-shadow .2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    }
+
+    /* --- Custom Navy Button --- */
+    .btn-navy {
+      background-color: #000066;   /* navy blue */
+      color: #fff !important;     /* keep text always white */
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 0.55rem 1.25rem;
+      transition: background-color 0.2s ease, transform 0.15s ease;
+    }
+    .btn-navy:hover {
+      background-color: #1a1a80;  /* lighter navy on hover */
+      color: #fff !important;     /* force text white */
+      transform: translateY(-2px);
+    }
+
+    /* Outline option button */
+    .btn-outline-navy {
+      border-color: #000066;
+      color: #000066;
+      font-size: 0.9rem;
+    }
+    .btn-outline-navy:hover {
+      background-color: #000066;
+      color: #fff;
+    }
+    
+    .session-name {
+    color: #0000cc;   /* vivid blue */
+    font-weight: 700; /* make it bold */
+  }
   </style>
 </head>
 <body class="bg-light">
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4 class="mb-0">Add Questions — <span class="text-primary"><%= sessionObj.getTitle()%></span> (Deadline: <%= sessionObj.getDeadline_date()%>)</h4>
+    <h4 class="mb-0">Add Questions — <span class="session-name"><%= sessionObj.getTitle()%></span> (Deadline: <%= sessionObj.getDeadline_date()%>)</h4>
     <div>
       <a href="/admin-dashboard/review-session" class="btn btn-outline-primary">Review</a>
     </div>
@@ -49,16 +87,16 @@
           <div class="mb-3" id="multipleChoiceOptions" style="display:none;">
             <label class="form-label">Options</label>
             <div id="optionsContainer"></div>
-            <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="addOptBtn">➕ Add Option</button>
+            <button type="button" class="btn btn-sm btn-outline-navy mt-2" id="addOptBtn">➕ Add Option</button>
           </div>
 
-          <!-- Rating advisory (kept just for info) -->
+          <!-- Rating advisory -->
           <div class="mb-3" id="ratingInfo" style="display:none;">
             <small class="text-muted">Students will rate from 1 (Poor) to 5 (Excellent).</small>
           </div>
 
           <div class="text-end">
-            <button class="btn btn-primary">Add Question</button>
+            <button class="btn btn-navy">Add Question</button>
           </div>
         </form>
       </div>

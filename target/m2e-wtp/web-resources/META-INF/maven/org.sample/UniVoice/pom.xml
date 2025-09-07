@@ -82,7 +82,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>org.sample.UniVoiceApplication</mainClass>
+                    <mainClass>com.univoice.UniVoiceApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

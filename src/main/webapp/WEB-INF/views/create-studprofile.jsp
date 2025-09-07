@@ -10,55 +10,166 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" referrerpolicy="no-referrer" />
 
 <style>
-  body{ background: #f6f8fb; font-family: 'Segoe UI', sans-serif; }
-  .page-wrap{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; }
-  .card-uv{
-    border:0; border-radius:18px; overflow:hidden;
-    box-shadow:0 18px 40px rgba(30,41,59,.12);
-    max-width:980px; width:100%;
-  }
-  .card-uv .hero{
-    background: linear-gradient(90deg,#6c63ff,#8e2de2);
-    color:#fff; padding:28px 28px;
-  }
-  .card-uv .hero .title{ margin:0; font-weight:800; letter-spacing:.2px; }
-  .card-uv .hero .subtitle{ opacity:.95; margin:6px 0 0 0; }
-  .pill{
-    display:inline-flex; align-items:center; gap:8px;
-    padding:6px 12px; font-weight:600; border-radius:999px;
-    background: rgba(255,255,255,.14); color:#fff;
-  }
-  .content{ background:#fff; padding:28px; }
-  .avatar-wrap{ position:relative; width:132px; height:132px; }
-  .avatar{
-    width:132px; height:132px; border-radius:50%;
-    object-fit:cover; border:4px solid #fff; box-shadow:0 8px 18px rgba(0,0,0,.12);
-  }
-  .avatar-edit{
-    position:absolute; right:4px; bottom:4px;
-    border:0; width:40px; height:40px; border-radius:999px;
-    background:#6c63ff; color:#fff; display:grid; place-items:center;
-    box-shadow:0 8px 18px rgba(108,99,255,.4);
-  }
-  .avatar-edit:hover{ background:#5a53ff; }
-  .form-label{ font-weight:700; color:#1f2937; }
-  .form-control, .form-select{
-    border-radius:14px; padding:12px 14px; border:1px solid #e5e7eb;
-  }
-  .form-control:focus{ border-color:#6c63ff; box-shadow:0 0 0 .2rem rgba(108,99,255,.15); }
-  .btn-save{
-    background: linear-gradient(90deg,#6c63ff,#8e2de2);
-    border:0; color:#fff; font-weight:800; border-radius:14px; padding:12px 18px;
-    box-shadow:0 10px 22px rgba(108,99,255,.35);
-  }
-  .btn-save:hover{ transform: translateY(-1px); color:#fff; }
-  .btn-cancel{ border-radius:14px; padding:12px 18px; }
-  .small-hint{ color:#6b7280; font-size:.9rem; }
-  .fade-in{ opacity:0; transform: translateY(16px); animation:fadeUp .5s ease forwards; }
-  @keyframes fadeUp{ to{ opacity:1; transform:none; } }
+  body {
+  background: #f6fdf9; /* light green background */
+  font-family: 'Segoe UI', sans-serif;
+}
 
-  /* Alert styles */
-  .uv-alert{ border-radius:14px; border:0; box-shadow:0 10px 24px rgba(0,0,0,.08); }
+.page-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card-uv {
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px rgba(30,41,59,.12);
+  max-width: 980px;
+  width: 100%;
+}
+
+/* Header Hero */
+.card-uv .hero {
+  background: linear-gradient(135deg, #10b981, #06b6d4); /* greenish gradient */
+  color: #fff;
+  padding: 28px 28px;
+}
+
+.card-uv .hero .title {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: #fff;
+}
+
+.card-uv .hero .subtitle {
+  opacity: .95;
+  margin: 6px 0 0 0;
+}
+
+/* Profile Pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+}
+
+/* Content */
+.content {
+  background: #fff;
+  padding: 28px;
+}
+
+/* Avatar */
+.avatar-wrap {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+.avatar {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 8px 18px rgba(0,0,0,.12);
+}
+
+/* Edit avatar button */
+.avatar-edit {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  border: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10b981, #06b6d4); /* greenish */
+  color: #fff;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 18px rgba(16,185,129,.4);
+}
+.avatar-edit:hover {
+  background: linear-gradient(135deg, #0e9f75, #0597ad); /* darker green hover */
+}
+
+/* Labels & Inputs */
+.form-label {
+  font-weight: 700;
+  color: #1f2937;
+}
+.form-control, .form-select {
+  border-radius: 14px;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+}
+.form-control:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 .2rem rgba(16,185,129,.25);
+}
+
+/* Save button */
+.btn-save {
+  background: linear-gradient(135deg, #10b981, #06b6d4); /* green gradient */
+  border: 0;
+  color: #fff;
+  font-weight: 800;
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 10px 22px rgba(16,185,129,.35);
+  transition: transform .2s ease;
+}
+.btn-save:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #0e9f75, #0597ad);
+  box-shadow: 0 10px 22px rgba(6,182,212,.35);
+  color: #fff;
+}
+
+/* Cancel button */
+.btn-cancel {
+  border-radius: 14px;
+  padding: 12px 18px;
+  border: 2px solid #10b981;
+  color: #10b981;
+  font-weight: 600;
+  background: #fff;
+  transition: all .2s ease;
+}
+.btn-cancel:hover {
+  background: #10b981;
+  color: #fff;
+}
+
+/* Helper text */
+.small-hint { color: #6b7280; font-size: .9rem; }
+
+/* Alerts */
+.uv-alert {
+  border-radius: 14px;
+  border: 0;
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+}
+
+/* Fade animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp .5s ease forwards;
+}
+@keyframes fadeUp { to { opacity: 1; transform: none; } }
+  
+  
 </style>
 </head>
 <body>

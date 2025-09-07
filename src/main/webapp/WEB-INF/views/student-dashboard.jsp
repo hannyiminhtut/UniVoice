@@ -10,13 +10,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" referrerpolicy="no-referrer" />
 <style>
     body {
-        background-color: #f0e9ff;
-        font-family: 'Segoe UI', sans-serif;
-    }
+    background-color: #e6f9f4; /* light green tone */
+    font-family: 'Segoe UI', sans-serif;
+}
+    
 
     /* Sidebar */
     .sidebar {
-        background: linear-gradient(180deg, #8e2de2, #6c63ff);
+        background: linear-gradient(135deg, #10b981, #06b6d4);
         color: white;
         min-height: 100vh;
         padding-top: 30px;
@@ -44,14 +45,7 @@
     	max-width:175vh;
     }
 
-    /* Cards */
-    .custom-card {
-        border-radius: 15px;
-        background: white;
-        padding: 20px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+    
     .custom-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 6px 15px rgba(0,0,0,0.12);
@@ -131,19 +125,7 @@
         margin: 8px 0 0 0;
     }
 
-    /* Learn more button */
-.status-card .learn-btn {
-    align-self: flex-start;
-    border-radius: 999px;
-    padding: 8px 12px;        /* smaller button */
-    font-size: 0.75rem;       /* smaller text */
-    font-weight: 600;
-    border: 0;
-    background: #6c63ff;
-    color: #fff;
-    margin-top: 10px;         /* breathing room above */
-    line-height: 1.2;
-}
+   
 .status-card .learn-btn i { margin-right: 6px; }
 
     /* Small helper for the purple section titles */
@@ -152,13 +134,49 @@
         margin-bottom: 12px;
         transition: transform .15s ease, box-shadow .15s ease, background .2s ease, opacity .2s ease;
     }
-    .status-card .learn-btn:hover,
-.status-card .learn-btn:focus {
-  background: linear-gradient(90deg, #544CFF, #7A6BFF);
-  box-shadow: 0 6px 14px rgba(108,99,255,.35);
-  transform: translateY(-1px);
-  outline: none;
+    /* Learn More button */
+.status-card .learn-btn {
+    align-self: flex-start;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 0;
+    background: linear-gradient(135deg, #10b981, #06b6d4); /* greenish gradient */
+    color: #fff;
+    margin-top: 10px;
+    line-height: 1.2;
 }
+.status-card .learn-btn i { margin-right: 6px; }
+
+.status-card .learn-btn:hover,
+.status-card .learn-btn:focus {
+    background: linear-gradient(135deg, #0e9f75, #0597ad); /* darker gradient */
+    box-shadow: 0 6px 14px rgba(6, 182, 212, .35), 0 0 8px rgba(16, 185, 129, .45); /* teal + green glow */
+    transform: translateY(-1px);
+    outline: none;
+    color: #fff;
+}
+
+/* Got it button */
+.btn-gotit {
+  width: 100%;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  border: 0;
+  background: linear-gradient(135deg, #10b981, #06b6d4); /* greenish gradient */
+  color: #fff;
+}
+
+.btn-gotit:hover {
+  background: linear-gradient(135deg, #0e9f75, #0597ad); /* darker gradient */
+  box-shadow: 0 6px 14px rgba(6, 182, 212, .35), 0 0 8px rgba(16, 185, 129, .45); /* teal + green glow */
+  transform: translateY(-2px);
+  color: #fff; /* keep text white */
+}
+    
+    
     /* ===== Pretty modal like screenshot ===== */
 .uv-modal .modal-content{
   border-radius: 16px;
@@ -186,21 +204,7 @@
   opacity: 1;
   width: 28px; height: 28px;
 }
-.btn-gotit{
-  width: 100%;
-  border-radius: 999px;
-  padding: 12px 18px;
-  font-weight: 700;
-  border: 0;
-  background: linear-gradient(90deg, #6c63ff, #8e2de2); /* theme purple */
-  color: #fff;
-}
-.btn-gotit:hover {
-  background: linear-gradient(90deg, #544CFF, #7A6BFF); /* deeper purple */
-  box-shadow: 0 6px 14px rgba(108,99,255,.35);
-  transform: translateY(-2px);
-  color: #fff; /* keep white text */
-}
+
 .text-center h3 {
   color: #222;
 }
@@ -208,6 +212,37 @@
   font-size: 0.95rem;
   margin-top: 4px;
 }
+
+
+/* already exists earlier */
+.custom-card {
+  border-radius: 15px;
+  background: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+/* put this AFTER the above */
+.custom-card.header-banner {
+  background: linear-gradient(135deg, #10b981, #06b6d4) !important;
+  color: #fff;
+}
+
+
+/* ensure text is readable on the gradient */
+.custom-card.header-banner h5,
+.custom-card.header-banner h4,
+.custom-card.header-banner p {
+  color: #fff;
+}
+
+/* optional: make the profile ring match */
+.custom-card.header-banner .profile-img {
+  border-color: #fff;
+}
+
+
+
 
     
 </style>
@@ -258,7 +293,12 @@
 		  <% } %>
 			
             <!-- Welcome Card (unchanged) -->
-            <div class="custom-card mb-4 fade-in" style="background: linear-gradient(90deg, #6c63ff, #8e2de2); color: white;">
+            <div class="custom-card header-banner mb-4 fade-in">
+    <h5><%= java.time.LocalDate.now() %></h5>
+    <h4>Welcome back, <%=studentName %></h4>
+    <p>Always stay updated in your student dashboard</p>
+</div>
+            
             	<!-- Profile image (dynamic: student or default) -->
     <%
         String profileImg = (student != null && student.getImage() != null && !student.getImage().isEmpty()) 
@@ -268,10 +308,8 @@
     <img src="<%= profileImg %>" 
          alt="Profile" 
          class="profile-img position-absolute" 
-         style="top: 16px; right: 16px; border:2px solid #fff; width:45px; height:45px;" />
-                <h5><%= java.time.LocalDate.now() %></h5>
-                <h4>Welcome back, <%=studentName %></h4>
-                <p>Always stay updated in your student dashboard</p>
+         style="top: 40px; right: 20px; border:2px solid #fff; width:45px; height:45px;" />
+                
             </div>
 
             <!-- ===== Issue Status Cards (replaces Finance) ===== -->

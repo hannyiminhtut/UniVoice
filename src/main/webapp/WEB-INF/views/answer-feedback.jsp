@@ -3,157 +3,252 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.*" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Feedback Sessions</title>
 
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
   <style>
-    :root { --bg:#f6f7fb; --card:#fff; --text:#1f2937; }
-    html, body { background:var(--bg); color:var(--text); font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+    :root{
+      --bg:#f0fdf7;                 /* light green */
+      --card:#ffffff;
+      --ink:#0f172a;
+      --muted:#64748b;
+      --brand:#10b981;              /* emerald */
+      --brand-2:#06b6d4;            /* teal */
+      --brand-deep:#0e9f75;         /* darker emerald */
+      --shadow:0 12px 28px rgba(2,6,23,.08);
+      --ring: rgba(6,182,212,.22);  /* teal glow */
+      --border:#e5e7eb;
+    }
 
-    .page-title { font-weight:800; letter-spacing:.2px; }
+    html,body{ background:var(--bg); color:var(--ink); font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
 
-    .session-row {
+    /* Header box */
+    .page-hero{
+      background: linear-gradient(135deg,#ecfdf5 0%, #e6fffb 100%); /* mint → aqua */
+      border: 1px solid #d1fae5;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 22px 24px;
+    }
+    .page-hero h2{
+      margin:0; font-weight: 800; letter-spacing:.2px;
+      color:#065f46; /* deep emerald */
+      font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+    }
+    .page-hero .subtext{
+      color:#0f766e;                /* teal text */
+      font-size:.95rem;
+      font-weight:600;
+      margin-top: 4px;
+    }
+    .icon-circle{
+      width:44px; height:44px; border-radius:50%;
+      background: linear-gradient(135deg,var(--brand),var(--brand-2));
+      color:#fff; display:flex; align-items:center; justify-content:center;
+      font-size:1.25rem;
+      box-shadow:0 4px 12px var(--ring);
+    }
+
+    /* Card grid */
+    .sessions-grid{ margin-top: 18px; }
+    .session-card{
       background: var(--card);
-      border: 0;
-      border-left: 6px solid #2563eb;
-      border-radius: 14px;
-      box-shadow: 0 8px 22px rgba(0,0,0,.06);
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-      padding: 1.25rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 16px 16px;
+      height: 100%;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
     }
-    .session-row:hover {
+    .session-card:hover{
       transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(0,0,0,.10);
-      border-color: #1d4ed8;
+      box-shadow: 0 16px 32px rgba(2,6,23,.12);
+      border-color:#a7f3d0;            /* mint border on hover */
+      background:#f7fffd;              /* ultra light mint */
     }
-    .session-row.disabled { opacity:.75; }
 
-    .title {
-      font-size: clamp(1rem, 1.6vw, 1.15rem);
-      font-weight:700;
-      margin-bottom:.25rem;
+    .sess-title{
+      font-weight: 800;
+      font-size: 1.05rem;
+      margin: 0 0 6px 0;
       word-break: break-word;
+      color:#064e3b;                    /* darker emerald */
     }
-    .meta { color:#6b7280; font-weight:600; }
-    .cta-wrap { min-width: 210px; }
-    .btn-wide { width: 100%; }
+    .deadline{
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .92rem;
+    }
+    .deadline i{ color:#10b981; }       /* emerald icon */
+
+    /* CTAs */
+    .btn-start{
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border:0;
+      color:#fff;
+      font-weight: 800;
+      letter-spacing:.2px;
+      border-radius: 12px;
+      padding: .6rem .95rem;
+      width: 100%;
+      box-shadow: 0 10px 22px var(--ring);
+      transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+    }
+    .btn-start:hover{
+      transform: translateY(-1px);
+      filter: brightness(.98);
+      box-shadow: 0 14px 26px var(--ring);
+      color:#fff;
+    }
+    .btn-ghost{
+      width:100%;
+      border-radius:12px;
+      font-weight:800;
+      padding:.58rem .95rem;
+      border:2px solid #a7f3d0;        /* mint outline */
+      color:#047857;                    /* emerald text */
+      background:#ecfdf5;
+      cursor:not-allowed;
+    }
+
+    /* Subtle disabled tint */
+    .is-disabled{ opacity:.92; }
+
+    /* Make bootstrap’s outline buttons within ghost area look greenish, even if old classes remain */
+    .session-card .btn-outline-secondary.btn-ghost,
+    .session-card .btn-outline-danger.btn-ghost{
+      border-color:#a7f3d0 !important;
+      color:#047857 !important;
+      background:#ecfdf5 !important;
+    }
   </style>
 </head>
 <body>
 
-<div class="container py-5">
-  <h2 class="page-title mb-4">Available Feedback Sessions</h2>
+<div class="container py-4">
 
-  <div class="vstack gap-3">
-    <%
-      @SuppressWarnings("unchecked")
-      List<FeedbackSession> sessions = (List<FeedbackSession>) request.getAttribute("sessions");
+  <!-- Header box -->
+  <div class="page-hero d-flex align-items-center gap-3">
+    <div class="icon-circle">
+      <i class="fa-solid fa-clipboard-list"></i>
+    </div>
+    <div>
+      <h2>Available Feedback Sessions</h2>
+      <p class="subtext mb-0">Choose a session below and share your feedback</p>
+    </div>
+  </div>
 
-      // Use explicit Asia/Yangon timezone (UTC+06:30)
-      ZoneId zone = ZoneId.of("Asia/Yangon");
-      LocalDateTime now = LocalDateTime.now(zone);
-      LocalDate today = now.toLocalDate();
+  <!-- Cards -->
+  <div class="sessions-grid">
+    <div class="row g-3">
+      <%
+        @SuppressWarnings("unchecked")
+        List<FeedbackSession> sessions = (List<FeedbackSession>) request.getAttribute("sessions");
 
-      DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        ZoneId zone = ZoneId.of("Asia/Yangon");     // UTC+06:30
+        LocalDateTime now = LocalDateTime.now(zone);
+        LocalDate today = now.toLocalDate();
 
-      int rendered = 0;
+        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("MMM dd, yyyy");
 
-      if (sessions != null && !sessions.isEmpty()) {
-        for (FeedbackSession s : sessions) {
+        int rendered = 0;
 
-          // ---- Parse deadline into LocalDate (supports LocalDate, java.util.Date, or String ISO yyyy-MM-dd) ----
-          LocalDate deadlineDate = null;
-          try {
-            Object raw = s.getDeadline_date(); // adjust if your getter differs
-            if (raw instanceof LocalDate) {
-              deadlineDate = (LocalDate) raw;
-            } else if (raw instanceof java.util.Date) {
-              deadlineDate = ((java.util.Date) raw).toInstant().atZone(zone).toLocalDate();
-            } else if (raw instanceof String) {
-              deadlineDate = LocalDate.parse((String) raw);
-            }
-          } catch (Exception ignore) {}
+        if (sessions != null && !sessions.isEmpty()) {
+          for (FeedbackSession s : sessions) {
 
-          // If no parsable deadline, skip this session safely
-          if (deadlineDate == null) { continue; }
+            // Parse deadline flexibly
+            LocalDate deadlineDate = null;
+            try {
+              Object raw = s.getDeadline_date();
+              if (raw instanceof LocalDate) {
+                deadlineDate = (LocalDate) raw;
+              } else if (raw instanceof java.util.Date) {
+                deadlineDate = ((java.util.Date) raw).toInstant().atZone(zone).toLocalDate();
+              } else if (raw instanceof String) {
+                deadlineDate = LocalDate.parse((String) raw);
+              }
+            } catch (Exception ignore) {}
 
-          // ---- Cutoff is 12:00 noon on the deadline date ----
-          LocalDateTime cutoff = deadlineDate.atTime(12, 0);
+            if (deadlineDate == null) { continue; }
 
-          boolean isExpired      = now.isAfter(cutoff);             // after 12:00 on deadline day -> expired
-          boolean isPublished    = s.isPublished();
-          boolean isActive       = isPublished && !isExpired;
-          boolean isUnpublished  = !isPublished && !isExpired;
+            // Noon cutoff on deadline day
+            LocalDateTime cutoff = deadlineDate.atTime(12, 0);
 
-          String cardState = isActive ? "" : "disabled";
-          rendered++;
-    %>
+            boolean isExpired      = now.isAfter(cutoff);
+            boolean isPublished    = s.isPublished();
+            boolean isActive       = isPublished && !isExpired;
+            boolean isUnpublished  = !isPublished && !isExpired;
 
-    <!-- Full-width row card -->
-    <div class="session-row <%= cardState %> d-flex flex-column flex-lg-row align-items-start align-items-lg-center justify-content-between w-100">
+            rendered++;
+      %>
+      <div class="col-12 col-md-6 col-lg-4 d-flex">
+        <div class="session-card w-100 <%= (isActive ? "" : "is-disabled") %> d-flex flex-column">
+          <!-- Title -->
+          <h5 class="sess-title"><%= s.getTitle() %></h5>
 
-      <!-- Left: title + meta -->
-      <div class="me-lg-3">
-        <div class="title"><%= s.getTitle() %></div>
-        <div class="meta">
-          <%
-            if (deadlineDate.isEqual(today) && !isExpired) {
-          %>
-              Closes today at 12:00
-          <%
-            } else {
-          %>
-              Deadline: <%= deadlineDate.format(dateFmt) %> (12:00)
-          <%
-            }
-          %>
+          <!-- Deadline only -->
+          <div class="deadline mb-3">
+            <i class="fa-solid fa-calendar-day"></i>
+            <%
+              if (deadlineDate.isEqual(today) && !isExpired) {
+            %>
+              <span>Closes today at 12:00</span>
+            <%
+              } else {
+            %>
+              <span>Deadline: <%= deadlineDate.format(dateFmt) %> (12:00)</span>
+            <%
+              }
+            %>
+          </div>
+
+          <!-- CTA -->
+          <div class="mt-auto">
+            <%
+              if (isActive) {
+            %>
+              <a href="feedback/<%= s.getId() %>" class="btn btn-start">Start Feedback</a>
+            <%
+              } else if (isUnpublished) {
+            %>
+              <button class="btn btn-outline-secondary btn-ghost" disabled>Not Published</button>
+            <%
+              } else {
+            %>
+              <button class="btn btn-outline-danger btn-ghost" disabled>Expired</button>
+            <%
+              }
+            %>
+          </div>
         </div>
       </div>
+      <%
+          } // end for
+        } // end if
 
-      <!-- Right: primary action -->
-      <div class="cta-wrap mt-3 mt-lg-0">
-        <%
-          if (isActive) {
-        %>
-            <a href="feedback/<%= s.getId() %>" class="btn btn-primary btn-wide">Start Feedback</a>
-        <%
-          } else if (isUnpublished) {
-        %>
-            <button class="btn btn-outline-secondary btn-wide" disabled
-                    title="This session isn’t published yet.">Not Published</button>
-        <%
-          } else {
-        %>
-            <button class="btn btn-outline-danger btn-wide" disabled
-                    title="This session is no longer accepting responses.">Expired</button>
-        <%
-          }
-        %>
-      </div>
+        if (sessions == null || sessions.isEmpty() || rendered == 0) {
+      %>
+        <div class="col-12">
+          <div class="alert alert-light border text-secondary">
+            No feedback sessions available right now. Please check back later.
+          </div>
+        </div>
+      <%
+        }
+      %>
     </div>
-
-    <%
-        } // end for
-      } // end if sessions
-
-      if (sessions == null || sessions.isEmpty() || rendered == 0) {
-    %>
-      <div class="alert alert-light border text-secondary m-0">
-        No feedback sessions available right now. Please check back later.
-      </div>
-    <%
-      }
-    %>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </body>
 </html>

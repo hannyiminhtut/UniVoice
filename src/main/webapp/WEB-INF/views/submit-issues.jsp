@@ -1,186 +1,187 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>UniVoice — Submit Issue</title>
+<title>UniVoice</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" />
+
 <style>
   body {
-    background: #f5f7fb;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+  background:#f0fdf7; /* light green background */
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  .issue-card {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    padding: 30px;
-    max-width: 650px;
-    margin: auto;
-    margin-top: 40px;
-    animation: fadeInUp 0.6s ease;
-  }
+.issue-card {
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  max-width:650px;
+  margin:40px auto;
+  overflow:hidden;
+}
 
-  .form-label { font-weight: 600; }
+/* Header */
+.issue-header {
+  background:linear-gradient(135deg,#10b981,#06b6d4); /* greenish gradient */
+  color:#fff;
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.issue-header i {
+  font-size:2rem;
+}
+.issue-header h4 {
+  margin:0;
+  font-weight:800;
+  font-size:1.4rem;
+}
+.issue-header small {
+  display:block;
+  font-size:.9rem;
+  opacity:.9;
+}
 
-  .input-group-text {
-    background-color: #f1f3f8;
-    border: none;
-    font-size: 1.2rem;
-    color: #6c63ff;
-  }
+/* Body */
+.issue-body {
+  padding:22px;
+}
 
-  .form-control, .form-select {
-    border-radius: 10px;
-    padding: 12px;
-  }
+/* Form labels */
+.form-label {
+  font-weight:700;
+  color:#10b981 !important;  /* green */
+  margin-bottom:.4rem;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.form-label i {
+  color:#10b981 !important;
+}
 
-  .btn-submit {
-    background: linear-gradient(90deg, #6c63ff, #8e2de2);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  .btn-submit:hover {
-    background: linear-gradient(90deg, #8e2de2, #6c63ff);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
+/* Inputs */
+.input-group-text {
+  background:#f3fdf9;
+  border:none;
+  color:#10b981;
+  font-size:1.1rem;
+}
+.form-control, .form-select, textarea {
+  border-radius:10px;
+  padding:12px;
+}
+.form-control:focus, .form-select:focus {
+  border-color:#06b6d4;
+  box-shadow:0 0 0 3px rgba(6,182,212,0.25);
+}
 
-  .btn-back {
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-  }
+/* Upload box */
+.upload-box {
+  border:2px dashed #10b981;    /* green border */
+  border-radius:12px;
+  text-align:center;
+  padding:40px 20px;
+  min-height:160px;
+  width:100%;
+  color:#6b7280;
+  cursor:pointer;
+  transition:.2s ease;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.upload-box:hover {
+  background:#f0fdf7;
+  border-color:#06b6d4;
+}
+.upload-box i {
+  font-size:2.2rem;
+  color:#10b981;
+  margin-bottom:8px;
+}
 
-  .img-preview {
-    max-width: 100%;
-    max-height: 200px;
-    border-radius: 10px;
-    margin-top: 10px;
-    display: none;
-  }
-
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .noti {
-    max-width: 650px;
-    margin: auto;
-  }
+/* Submit button */
+.btn-submit {
+  background:linear-gradient(135deg,#10b981,#06b6d4); /* green gradient */
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:12px;
+  font-weight:700;
+  width:100%;
+  transition:.2s ease;
+}
+.btn-submit:hover {
+  background:linear-gradient(135deg,#0e9f75,#0597ad); /* darker green hover */
+  box-shadow:0 4px 12px rgba(6,182,212,.25);
+  transform:translateY(-1px);
+}
+  
+  
 </style>
 </head>
 <body>
 
-<!-- Notifications -->
-<div class="noti">
-  <% if (request.getAttribute("success") != null) { %>
-    <div class="alert alert-success mt-3" role="alert">
-      <%= request.getAttribute("success") %>
-    </div>
-  <% } %>
-
-  <% if (request.getAttribute("fail") != null) { %>
-    <div class="alert alert-danger mt-3" role="alert">
-      <%= request.getAttribute("fail") %>
-    </div>
-  <% } %>
-</div>
-
-<!-- Issue Card -->
 <div class="issue-card">
-  <h3 class="mb-4 text-center">
-    <i class="fa-solid fa-bug text-danger me-2" aria-hidden="true"></i>
-    Submit an Issue
-  </h3>
+  <!-- Header -->
+  <div class="issue-header">
+    <i class="fa-solid fa-bug"></i>
+    <div>
+      <h4>Submit an Issue</h4>
+      <small>Help us improve by reporting problems</small>
+    </div>
+  </div>
 
-  <form id="issueForm" method="POST" action="./sendIssue" enctype="multipart/form-data">
-    <!-- Issue Title -->
-    <div class="mb-3">
-      <label for="title" class="form-label">Issue Title</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-heading" aria-hidden="true"></i></span>
+  <!-- Body -->
+  <div class="issue-body">
+    <form method="POST" action="./sendIssue" enctype="multipart/form-data">
+      
+      <!-- Title -->
+      <div class="mb-3">
+        <label for="title" class="form-label"><i class="fa-regular fa-file-lines me-2"></i> Issue Title</label>
         <input type="text" class="form-control" id="title" name="title" placeholder="Enter issue title" required>
       </div>
-    </div>
 
-    <!-- Issue Description -->
-    <div class="mb-3">
-      <label for="description" class="form-label">Issue Description</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-align-left" aria-hidden="true"></i></span>
-        <textarea class="form-control" id="description" name="des" rows="4" placeholder="Describe the issue..." required></textarea>
+      <!-- Description -->
+      <div class="mb-3">
+        <label for="description" class="form-label"><i class="fa-regular fa-clipboard me-2"></i> Issue Description</label>
+        <textarea class="form-control" id="description" name="des" rows="3" placeholder="Describe the issue..." required></textarea>
       </div>
-    </div>
 
-    <!-- Location -->
-    <div class="mb-3">
-      <label for="location" class="form-label">Location</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></span>
+      <!-- Location -->
+      <div class="mb-3">
+        <label for="location" class="form-label"><i class="fa-solid fa-location-dot me-2"></i> Location</label>
         <input type="text" class="form-control" id="location" name="location" placeholder="e.g., Building 3, Room 325" required>
       </div>
-    </div>
 
-    <!-- Image Upload -->
-    <div class="mb-3">
-      <label for="image" class="form-label">Attach Image (optional)</label>
-      <div class="input-group">
-        <span class="input-group-text"><i class="fa-solid fa-image" aria-hidden="true"></i></span>
-        <input class="form-control" type="file" id="image" name="img" accept="image/*">
-      </div>
-      <img id="preview" class="img-preview" alt="Preview">
-    </div>
+      <!-- Image -->
+<div class="mb-3">
+  <label for="image" class="form-label d-block text-primary fw-bold" style="color:#6c63ff;">
+    <i class="fa-regular fa-image me-2"></i> Attach Image <small class="text-muted">(optional)</small>
+  </label>
+  <label for="image" class="upload-box">
+    <i class="fa-solid fa-upload"></i>
+    <div>Drop your image here or click to browse</div>
+    <small>PNG, JPG, GIF up to 10MB</small>
+  </label>
+  <input type="file" id="image" name="img" class="d-none" accept="image/*">
+</div>
+      
 
-    <!-- Buttons Row -->
-    <div class="d-flex justify-content-between mt-4">
-      <!-- Back Button -->
-      <a href="/student-dashboard" class="btn btn-light btn-back">
-        <i class="fa-solid fa-arrow-left me-2"></i> Back to Dashboard
-      </a>
-
-      <!-- Submit Button -->
+      <!-- Submit -->
       <button type="submit" class="btn-submit">
         <i class="fa-solid fa-paper-plane me-2"></i> Submit Issue
       </button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 
-<script>
-  // Image preview
-  const imageInput = document.getElementById('image');
-  const preview = document.getElementById('preview');
-
-  if (imageInput) {
-    imageInput.addEventListener('change', () => {
-      const file = imageInput.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-      } else {
-        preview.style.display = 'none';
-      }
-    });
-  }
-
-  // Auto-dismiss alerts after 5 seconds
-  setTimeout(() => {
-    document.querySelectorAll('.alert').forEach(a => a.remove());
-  }, 5000);
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

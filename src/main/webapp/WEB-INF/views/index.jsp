@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -9,25 +11,34 @@
 <link href="./assets/css/style.css" rel="stylesheet" />
 <link href="./assets/imgs/univoice.jpg" rel="icon" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+.top-section{
+  background: url('<%=request.getContextPath()%>/assets/imgs/homepg.jpg') no-repeat center center;
+  background-size: cover;
+}
+</style>
 
 </head>
 
 <body>
 <!-- Navbar -->
-<div class="container-fluid nav-custom">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-        <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-primary" href="#">
-                UniVoice
-            </a>
+
+<div class="container-fluid nav-custom p-0">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 w-100">
+        <div class="container-fluid px-0">
+
+            <a class="navbar-brand fw-bold text-primary d-flex align-items-center ms-3" href="#">
+    <i class="fa-solid fa-microphone-lines me-2"></i> UniVoice
+</a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="#">Home</a></li>
-                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/about">About</a></li>
-                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/contact">Contact</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/'/>">Home</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/about'/>">About</a></li>
+                    <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/contact'/>">Contact</a></li>
                     <li class="nav-item ms-3">
                         <a href="/login" class="btn login-btn">Login</a>
                     </li>
@@ -106,7 +117,7 @@
       
       <!-- Left Image -->
       <div class="col-md-6 text-center">
-        <img src="./assets/imgs/whyuse.jpg" alt="Why Use This Platform" class="img-fluid rounded">
+        <img src="./assets/imgs/whyuse1.png" alt="Why Use This Platform" class="img-fluid rounded">
       </div>
       
       <!-- Right Text -->
@@ -407,13 +418,12 @@
 
       <!-- Office Hours -->
       <div class="col-md-3 col-sm-6 mb-4">
-        <h5 class="fw-bold">Office Hours</h5>
-        <p>Monday - Friday: 8:00 AM - 6:00 PM</p>
-        <p>Saturday: 9:00 AM - 2:00 PM</p>
-        <p>Sunday: Closed</p>
+        <h5 class="fw-bold">Operating Hours</h5>
+        <p>Monday to Friday</p>
+        <p>9:00 AM – 5:00 PM</p>
+        <p>Closed on weekends and holidays</p>
       </div>
     </div>
-
     <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.3);">
 
     <!-- Footer Bottom -->

@@ -81,7 +81,42 @@
   font-weight: 700; font-size: .85rem;
 }
 .q-row:hover .q-num { background:#dbe3ea; }
-  
+
+/* Question row hover → light blue */
+.q-row:hover {
+  background: #e8f1ff;   /* light blue shade */
+  transform: translateY(-1px);
+}
+
+/* Questions header styling */
+.card-shell h6 {
+  font-size: 1.6rem;     /* bigger font */
+  font-weight: 900;      /* stronger */
+  color: #002699;        /* deep blue */
+  margin-bottom: 0.5rem;
+}
+
+ .chart-wrap{
+  position: relative;
+  /* give the chart real space so it isn't 0px tall */
+  height: 340px;
+  min-height: 300px;
+
+  /* center the canvas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* let the canvas fill the wrap */
+.chart-wrap canvas{
+  display: block;
+  width: 100% !important;
+  height: 100% !important;   /* pairs with maintainAspectRatio:false */
+  margin: 0 auto;
+}
+ 
+ 
   
 </style>
 </head>
@@ -215,26 +250,41 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-  var BASE = '<%= request.getContextPath() %>';   // safe for any context path
+  var BASE = '<%= request.getContextPath() %>';
   var chart = null;
   var chartModalEl = document.getElementById('chartModal');
   var chartModal = new bootstrap.Modal(chartModalEl);
   var skeleton = document.getElementById('chartSkeleton');
 
+  // store the last dataset while we wait for the modal to be shown
+  var pendingRender = null;
+
   chartModalEl.addEventListener('hidden.bs.modal', function(){
     if (chart) { chart.destroy(); chart = null; }
+    // reset canvas
     var old = document.getElementById('pieCanvas');
     var fresh = old.cloneNode(true); old.parentNode.replaceChild(fresh, old);
+    pendingRender = null;
+  });
+
+  // when modal is fully visible, render (or resize) the chart
+  chartModalEl.addEventListener('shown.bs.modal', function () {
+    if (pendingRender) {
+      renderChart(pendingRender.labels, pendingRender.counts);
+      pendingRender = null;
+    } else if (chart) {
+      // if chart already exists, make sure it sizes correctly
+      chart.resize();
+    }
   });
 
   function openChart(li){
     var qid = li.getAttribute('data-qid');
-    var title = li.querySelector('.q-title').innerText;
+    var title = li.querySelector('.q-title')?.innerText || 'Question';
     document.getElementById('chartTitle').innerText = title;
 
-    // show modal + skeleton first
-    chartModal.show();
-    skeleton.style.display = 'flex';
+    chartModal.show();                 // show first
+    skeleton.style.display = 'flex';   // show loader immediately
 
     var url = BASE + '/admin-dashboard/viewfeedback/api/question/' + qid;
     fetch(url, { headers: { 'Accept': 'application/json' } })
@@ -243,32 +293,48 @@
         var labels = Array.isArray(data.labels) && data.labels.length ? data.labels : ['No responses yet'];
         var counts = Array.isArray(data.counts) && data.counts.length ? data.counts : [1];
 
-        // simple pleasant palette
-        var palette = [
-          '#3b82f6','#22c55e','#ef4444','#f59e0b','#a855f7',
-          '#06b6d4','#84cc16','#e11d48','#10b981','#6366f1'
-        ];
-        var bg = labels.map(function(_,i){ return palette[i % palette.length]; });
+        // queue rendering until the modal is fully shown
+        pendingRender = { labels, counts };
 
-        var ctx = document.getElementById('pieCanvas').getContext('2d');
-        chart = new Chart(ctx, {
-          type: 'pie',
-          data: { labels: labels, datasets: [{ data: counts, backgroundColor: bg }] },
-          options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
-        });
+        // if it's already shown (e.g., fast connection), render right away
+        if (chartModalEl.classList.contains('show')) {
+          renderChart(labels, counts);
+          pendingRender = null;
+        }
       })
       .catch(function(err){
         console.error(err);
-        // Show a tiny fallback chart instead of an alert
-        var ctx = document.getElementById('pieCanvas').getContext('2d');
-        chart = new Chart(ctx, {
-          type: 'pie',
-          data: { labels:['Error'], datasets:[{ data:[1], backgroundColor:['#ef4444'] }] },
-          options:{ responsive:true, plugins:{ legend:{ position:'bottom' } } }
-        });
+        pendingRender = { labels:['Error'], counts:[1] };
+        if (chartModalEl.classList.contains('show')) {
+          renderChart(['Error'], [1]);
+          pendingRender = null;
+        }
       })
       .finally(function(){ skeleton.style.display = 'none'; });
   }
+
+  function renderChart(labels, counts){
+    var palette = [
+      '#3b82f6','#22c55e','#ef4444','#f59e0b','#a855f7',
+      '#06b6d4','#84cc16','#e11d48','#10b981','#6366f1'
+    ];
+    var bg = labels.map(function(_,i){ return palette[i % palette.length]; });
+
+    var ctx = document.getElementById('pieCanvas').getContext('2d');
+    if (chart) { chart.destroy(); chart = null; }
+
+    chart = new Chart(ctx, {
+      type: 'pie',
+      data: { labels: labels, datasets: [{ data: counts, backgroundColor: bg }] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,   // <-- important with fixed-height container
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+    chart.resize(); // ensure it picks up current modal size
+  }
 </script>
+
 </body>
 </html>
