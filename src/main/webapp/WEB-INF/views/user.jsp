@@ -177,15 +177,38 @@
 <!-- Validation (unchanged) -->
 <script>
 function validateForm() {
+  const email = document.getElementById('email').value;
   const pwd = document.getElementById('password').value;
   const repwd = document.getElementById('repassword').value;
+
   const pwdHelp = document.getElementById('passwordHelp');
   const matchHelp = document.getElementById('matchHelp');
-  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
+  const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
   let isValid = true;
-  if (!strongRegex.test(pwd)) { pwdHelp.classList.remove('d-none'); isValid = false; } else { pwdHelp.classList.add('d-none'); }
-  if (pwd !== repwd) { matchHelp.classList.remove('d-none'); isValid = false; } else { matchHelp.classList.add('d-none'); }
+
+  // Password strength check
+  if (!strongRegex.test(pwd)) {
+    pwdHelp.classList.remove('d-none');
+    isValid = false;
+  } else {
+    pwdHelp.classList.add('d-none');
+  }
+
+  // Password match check
+  if (pwd !== repwd) {
+    matchHelp.classList.remove('d-none');
+    isValid = false;
+  } else {
+    matchHelp.classList.add('d-none');
+  }
+
+  // Email domain check (@uit.edu.mm)
+  if (!email.endsWith('@uit.edu.mm')) {
+    alert('Email must be a valid @uit.edu.mm address.');
+    isValid = false;
+  }
+
   return isValid;
 }
 </script>

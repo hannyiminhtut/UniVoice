@@ -25,7 +25,7 @@
     --shadow-hover: 0 18px 40px rgba(15,23,42,.14);
   }
 
-  
+
   .navbar{
     height:65px;
     border-bottom:1px solid #eee;
@@ -39,13 +39,13 @@
     text-decoration:none;
   }
   .navbar i{ color:#0f156d; font-size:1.2rem; }
-  
+
   .page-title {
   font-weight: 800;
   letter-spacing: .2px;
   padding: 12px 0; /* top & bottom padding */
 }
-  
+
 
   /* Page background + typography */
   body{

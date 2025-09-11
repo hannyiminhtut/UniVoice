@@ -13,23 +13,22 @@
 
   <style>
     :root{
-      --bg:#f0fdf7;                 /* light green */
+      --bg:#f0fdf7;
       --card:#ffffff;
       --ink:#0f172a;
       --muted:#64748b;
-      --brand:#10b981;              /* emerald */
-      --brand-2:#06b6d4;            /* teal */
-      --brand-deep:#0e9f75;         /* darker emerald */
+      --brand:#10b981;
+      --brand-2:#06b6d4;
+      --brand-deep:#0e9f75;
       --shadow:0 12px 28px rgba(2,6,23,.08);
-      --ring: rgba(6,182,212,.22);  /* teal glow */
+      --ring: rgba(6,182,212,.22);
       --border:#e5e7eb;
     }
 
     html,body{ background:var(--bg); color:var(--ink); font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
 
-    /* Header box */
     .page-hero{
-      background: linear-gradient(135deg,#ecfdf5 0%, #e6fffb 100%); /* mint → aqua */
+      background: linear-gradient(135deg,#ecfdf5 0%, #e6fffb 100%);
       border: 1px solid #d1fae5;
       border-radius: 16px;
       box-shadow: var(--shadow);
@@ -37,11 +36,11 @@
     }
     .page-hero h2{
       margin:0; font-weight: 800; letter-spacing:.2px;
-      color:#065f46; /* deep emerald */
+      color:#065f46;
       font-size: clamp(1.2rem, 2.4vw, 1.6rem);
     }
     .page-hero .subtext{
-      color:#0f766e;                /* teal text */
+      color:#0f766e;
       font-size:.95rem;
       font-weight:600;
       margin-top: 4px;
@@ -54,7 +53,6 @@
       box-shadow:0 4px 12px var(--ring);
     }
 
-    /* Card grid */
     .sessions-grid{ margin-top: 18px; }
     .session-card{
       background: var(--card);
@@ -68,8 +66,8 @@
     .session-card:hover{
       transform: translateY(-2px);
       box-shadow: 0 16px 32px rgba(2,6,23,.12);
-      border-color:#a7f3d0;            /* mint border on hover */
-      background:#f7fffd;              /* ultra light mint */
+      border-color:#a7f3d0;
+      background:#f7fffd;
     }
 
     .sess-title{
@@ -77,7 +75,7 @@
       font-size: 1.05rem;
       margin: 0 0 6px 0;
       word-break: break-word;
-      color:#064e3b;                    /* darker emerald */
+      color:#064e3b;
     }
     .deadline{
       display: inline-flex;
@@ -87,9 +85,8 @@
       font-weight: 600;
       font-size: .92rem;
     }
-    .deadline i{ color:#10b981; }       /* emerald icon */
+    .deadline i{ color:#10b981; }
 
-    /* CTAs */
     .btn-start{
       background: linear-gradient(135deg, var(--brand), var(--brand-2));
       border:0;
@@ -113,29 +110,19 @@
       border-radius:12px;
       font-weight:800;
       padding:.58rem .95rem;
-      border:2px solid #a7f3d0;        /* mint outline */
-      color:#047857;                    /* emerald text */
+      border:2px solid #a7f3d0;
+      color:#047857;
       background:#ecfdf5;
       cursor:not-allowed;
     }
 
-    /* Subtle disabled tint */
     .is-disabled{ opacity:.92; }
-
-    /* Make bootstrap’s outline buttons within ghost area look greenish, even if old classes remain */
-    .session-card .btn-outline-secondary.btn-ghost,
-    .session-card .btn-outline-danger.btn-ghost{
-      border-color:#a7f3d0 !important;
-      color:#047857 !important;
-      background:#ecfdf5 !important;
-    }
   </style>
 </head>
 <body>
 
 <div class="container py-4">
 
-  <!-- Header box -->
   <div class="page-hero d-flex align-items-center gap-3">
     <div class="icon-circle">
       <i class="fa-solid fa-clipboard-list"></i>
@@ -146,14 +133,13 @@
     </div>
   </div>
 
-  <!-- Cards -->
   <div class="sessions-grid">
     <div class="row g-3">
       <%
         @SuppressWarnings("unchecked")
         List<FeedbackSession> sessions = (List<FeedbackSession>) request.getAttribute("sessions");
 
-        ZoneId zone = ZoneId.of("Asia/Yangon");     // UTC+06:30
+        ZoneId zone = ZoneId.of("Asia/Yangon");
         LocalDateTime now = LocalDateTime.now(zone);
         LocalDate today = now.toLocalDate();
 
@@ -164,7 +150,6 @@
         if (sessions != null && !sessions.isEmpty()) {
           for (FeedbackSession s : sessions) {
 
-            // Parse deadline flexibly
             LocalDate deadlineDate = null;
             try {
               Object raw = s.getDeadline_date();
@@ -179,8 +164,8 @@
 
             if (deadlineDate == null) { continue; }
 
-            // Noon cutoff on deadline day
-            LocalDateTime cutoff = deadlineDate.atTime(12, 0);
+            // End of day cutoff
+            LocalDateTime cutoff = deadlineDate.atTime(23, 59, 59);
 
             boolean isExpired      = now.isAfter(cutoff);
             boolean isPublished    = s.isPublished();
@@ -191,10 +176,8 @@
       %>
       <div class="col-12 col-md-6 col-lg-4 d-flex">
         <div class="session-card w-100 <%= (isActive ? "" : "is-disabled") %> d-flex flex-column">
-          <!-- Title -->
           <h5 class="sess-title"><%= s.getTitle() %></h5>
 
-          <!-- Deadline only -->
           <div class="deadline mb-3">
             <i class="fa-solid fa-calendar-day"></i>
             <%
@@ -204,13 +187,12 @@
             <%
               } else {
             %>
-              <span>Deadline: <%= deadlineDate.format(dateFmt) %> (12:00)</span>
+              <span>Deadline: <%= deadlineDate.format(dateFmt) %> (23:59)</span>
             <%
               }
             %>
           </div>
 
-          <!-- CTA -->
           <div class="mt-auto">
             <%
               if (isActive) {
@@ -231,8 +213,8 @@
         </div>
       </div>
       <%
-          } // end for
-        } // end if
+          }
+        }
 
         if (sessions == null || sessions.isEmpty() || rendered == 0) {
       %>

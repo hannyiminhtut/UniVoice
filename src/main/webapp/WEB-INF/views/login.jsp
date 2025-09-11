@@ -19,7 +19,7 @@
 <div class="container-fluid nav-custom p-0">
   <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 w-100">
     <div class="container-fluid px-0">
-      <a class="navbar-brand fw-bold text-primary d-flex align-items-center ms-3" href="<c:url value='/'/>">
+      <a class="navbar-brand fw-bold text-primary d-flex align-items-center ms-3" href="../">
         <i class="fa-solid fa-microphone-lines me-2"></i> UniVoice
       </a>
 
@@ -30,8 +30,8 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/'/>">Home</a></li>
-          <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/about'/>">About</a></li>
-          <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="<c:url value='/contact'/>">Contact</a></li>
+          <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/about/">About</a></li>
+          <li class="nav-item ms-3"><a class="nav-link text-dark fw-semibold" href="/contact/">Contact</a></li>
           <li class="nav-item ms-3">
             <a href="<c:url value='/login'/>" class="btn login-btn">Login</a>
           </li>

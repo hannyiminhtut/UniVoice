@@ -97,11 +97,11 @@ tr[role="button"]{cursor:pointer;}
 
 <!-- Sidebar -->
 <div class="sidebar">
-  <a href="admin-dashboard/create">➕ Create Department</a><hr>
-  <a href="admin-dashboard/issues">📋 View Issues</a><hr>
-  <a href="admin-dashboard/questions">❓ Create Feedback Questions</a><hr>
+  <a href="../admin-dashboard/create">➕ Create Department</a><hr>
+  <a href="../admin-dashboard/issues">📋 View Issues</a><hr>
+  <a href="../admin-dashboard/questions">❓ Create Feedback Questions</a><hr>
   <a href="/admin-dashboard/viewfeedback">📝 View Feedback Answers</a><hr>
-  <a href="admin-dashboard/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
+  <a href="../admin-dashboard/logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a>
 </div>
 
 <!-- Main -->

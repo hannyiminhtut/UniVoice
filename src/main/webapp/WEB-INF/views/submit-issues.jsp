@@ -23,6 +23,11 @@
   overflow:hidden;
 }
 
+.noti{
+    max-width:650px;
+    margin:40px auto;
+}
+
 /* Header */
 .issue-header {
   background:linear-gradient(135deg,#10b981,#06b6d4); /* greenish gradient */
@@ -128,6 +133,15 @@
 </head>
 <body>
 
+ <!-- Alerts -->
+        <div class="noti">
+          <% if (request.getAttribute("success") != null) { %>
+            <div class="alert alert-success" role="alert"><%= request.getAttribute("success") %></div>
+          <% } %>
+          <% if (request.getAttribute("fail") != null) { %>
+            <div class="alert alert-danger" role="alert"><%= request.getAttribute("fail") %></div>
+          <% } %>
+        </div>
 <div class="issue-card">
   <!-- Header -->
   <div class="issue-header">
@@ -160,17 +174,26 @@
         <input type="text" class="form-control" id="location" name="location" placeholder="e.g., Building 3, Room 325" required>
       </div>
 
-      <!-- Image -->
-<div class="mb-3">
-  <label for="image" class="form-label d-block text-primary fw-bold" style="color:#6c63ff;">
-    <i class="fa-regular fa-image me-2"></i> Attach Image <small class="text-muted">(optional)</small>
-  </label>
-  <label for="image" class="upload-box">
-    <i class="fa-solid fa-upload"></i>
-    <div>Drop your image here or click to browse</div>
-    <small>PNG, JPG, GIF up to 10MB</small>
-  </label>
-  <input type="file" id="image" name="img" class="d-none" accept="image/*">
+    <div class="mb-3">
+      <label for="image" class="form-label d-block text-primary fw-bold" style="color:#6c63ff;">
+        <i class="fa-regular fa-image me-2"></i> Attach Image <small class="text-muted">(optional)</small>
+      </label>
+
+      <!-- Upload Box -->
+      <label for="image" class="upload-box" id="uploadBox">
+        <div id="uploadContent">
+          <i class="fa-solid fa-upload"></i>
+          <div>Drop your image here or click to browse</div>
+          <small>PNG, JPG, GIF up to 10MB</small>
+        </div>
+        <img id="previewImage" src="#" alt="Image Preview"
+             class="img-fluid rounded"
+             style="max-height:160px; display:none;">
+      </label>
+
+      <!-- Hidden file input -->
+      <input type="file" id="image" name="img" class="d-none" accept="image/*">
+    </div>
 </div>
       
 
@@ -183,5 +206,33 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const fileInput = document.getElementById("image");
+  const previewImage = document.getElementById("previewImage");
+  const uploadContent = document.getElementById("uploadContent");
+
+  fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", function () {
+        // Hide upload icon + text
+        uploadContent.style.display = "none";
+        // Show image preview inside box
+        previewImage.setAttribute("src", this.result);
+        previewImage.style.display = "block";
+      });
+      reader.readAsDataURL(file);
+    } else {
+      // Reset back to original state
+      uploadContent.style.display = "flex";
+      previewImage.style.display = "none";
+      previewImage.setAttribute("src", "#");
+    }
+  });
+
+// Auto-dismiss alerts
+  setTimeout(() => { document.querySelectorAll('.alert').forEach(a => a.remove()); }, 5000);
+</script>
 </body>
 </html>

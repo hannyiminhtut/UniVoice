@@ -308,7 +308,7 @@
     <img src="<%= profileImg %>" 
          alt="Profile" 
          class="profile-img position-absolute" 
-         style="top: 40px; right: 20px; border:2px solid #fff; width:45px; height:45px;" />
+         style="top: 40px; right: 55px; border:2px solid #fff; width:45px; height:45px;" />
                 
             </div>
 
@@ -452,7 +452,7 @@
     setTimeout(() => {
         const alerts = document.querySelectorAll('.alert');
         alerts.forEach(alert => alert.remove());
-    }, 5000);
+    }, 2000);
 </script>
 </body>
 </html>

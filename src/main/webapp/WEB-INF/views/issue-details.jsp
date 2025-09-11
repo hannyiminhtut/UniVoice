@@ -24,6 +24,13 @@
   body { background-color:#f4f6fa; }
   .navbar { height:65px; border-bottom:1px solid #eee; font-family:'Segoe UI',sans-serif; }
 
+  .navbar .fw-bold a {
+        font-size: 25px;
+        font-weight: 700;
+        color: #000066;
+        text-decoration: none;
+      }
+
   .issue-card{
     max-width:800px; margin:40px auto; background:#fff; border-radius:15px;
     box-shadow:0 4px 12px rgba(0,0,0,.1); overflow:hidden; transition:.3s;
@@ -54,7 +61,9 @@
 <nav class="navbar navbar-expand-lg bg-white shadow-sm px-3">
   <div class="container-fluid d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-3">
-      <div class="fw-bold fs-5 text-dark"><a href="/admin-dashboard" style="text-decoration:none;">Admin Dashboard</a></div>
+      <div class="fw-bold fs-5 text-dark">
+            <a href="../../admin-dashboard" style="text-decoration:none;">Admin Dashboard</a>
+       </div>
     </div>
     <div class="d-flex align-items-center gap-3">
       

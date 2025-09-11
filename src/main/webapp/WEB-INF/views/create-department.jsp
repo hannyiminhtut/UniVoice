@@ -187,26 +187,58 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   function validateForm() {
-    const pwd = document.getElementById('password').value;
-    const repwd = document.getElementById('repassword').value;
-    const pwdHelp = document.getElementById('passwordHelp');
-    const matchHelp = document.getElementById('matchHelp');
+      const email = document.getElementById('email').value;
+      const pwd = document.getElementById('password').value;
+      const repwd = document.getElementById('repassword').value;
+      const pwdHelp = document.getElementById('passwordHelp');
+      const matchHelp = document.getElementById('matchHelp');
 
-    const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+      // new email help
+      let emailHelp = document.getElementById('emailHelp');
+      if (!emailHelp) {
+        emailHelp = document.createElement('div');
+        emailHelp.id = 'emailHelp';
+        emailHelp.className = 'form-text text-danger d-none';
+        document.getElementById('email').insertAdjacentElement('afterend', emailHelp);
+      }
 
-    let isValid = true;
+      const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+      const emailRegex = /^[A-Za-z0-9._%+-]+@uit\.edu\.mm$/;
 
-    if (!strongRegex.test(pwd)) { pwdHelp.classList.remove('d-none'); isValid = false; }
-    else { pwdHelp.classList.add('d-none'); }
+      let isValid = true;
 
-    if (pwd !== repwd) { matchHelp.classList.remove('d-none'); isValid = false; }
-    else { matchHelp.classList.add('d-none'); }
+      // check email
+      if (!emailRegex.test(email)) {
+        emailHelp.textContent = "Email must end with @uit.edu.mm";
+        emailHelp.classList.remove('d-none');
+        isValid = false;
+      } else {
+        emailHelp.classList.add('d-none');
+      }
 
-    return isValid;
-  }
+      // check password strength
+      if (!strongRegex.test(pwd)) {
+        pwdHelp.classList.remove('d-none');
+        isValid = false;
+      } else {
+        pwdHelp.classList.add('d-none');
+      }
 
-  // Auto-dismiss alerts
-  setTimeout(() => { document.querySelectorAll('.alert').forEach(a => a.remove()); }, 5000);
+      // check confirm password
+      if (pwd !== repwd) {
+        matchHelp.classList.remove('d-none');
+        isValid = false;
+      } else {
+        matchHelp.classList.add('d-none');
+      }
+
+      return isValid;
+    }
+
+    // Auto-dismiss alerts
+    setTimeout(() => {
+      document.querySelectorAll('.alert').forEach(a => a.remove());
+    }, 5000);
 </script>
 </body>
 </html>

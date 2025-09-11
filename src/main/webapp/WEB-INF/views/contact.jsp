@@ -274,16 +274,14 @@
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="fw-bold">Contact Us</h5>
-          <p><i class="fas fa-envelope"></i> support@unireport.edu</p>
-          <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-          <p><i class="fas fa-map-marker-alt"></i> University Campus, Main Building, Room 101</p>
+          <p><i class="fas fa-envelope"></i> missayemoethetaung@gmail.com</p>
+          <p><i class="fas fa-phone"></i> +959694902120, +959757461077</p>
+          <p><i class="fas fa-map-marker-alt"></i> UIT Campus, Parami Road</p>
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="fw-bold">Quick Links</h5>
-          <p><a href="#">About Us</a></p>
-          <p><a href="#">Services</a></p>
-          <p><a href="#">Privacy Policy</a></p>
-          <p><a href="#">Terms of Service</a></p>
+          <p><a href="/about">About Us</a></p>
+          <p><a href="/contact">Contact us</a></p>
         </div>
         <div class="col-md-3 col-sm-6 mb-4">
           <h5 class="fw-bold">Operating Hours</h5>
